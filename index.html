@@ -53,16 +53,30 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:40px}
         </linearGradient>
       </defs>
       <!-- engranaje -->
-      <circle cx="50" cy="50" r="46" fill="none" stroke="var(--accent)" stroke-width="7" stroke-dasharray="6.02 6.02" opacity=".55"/>
-      <circle cx="50" cy="50" r="42" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.5"/>
-      <!-- lobo -->
-      <g transform="translate(50 53) scale(.74) translate(-50 -52)">
-        <path d="M18 10 L38 30 L62 30 L82 10 L87 46 L74 70 L59 87 L50 94 L41 87 L26 70 L13 46 Z" fill="url(#wg)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
-        <path d="M24 22 L33 33 L26 44 Z M76 22 L67 33 L74 44 Z" fill="var(--bg)" opacity=".45"/>
-        <path d="M50 30 L50 62" stroke="var(--bg)" stroke-width="2" opacity=".35"/>
-        <path d="M30 48 L45 54 L31 58 Z M70 48 L55 54 L69 58 Z" fill="var(--eye)"/>
-        <path d="M43 78 L57 78 L50 88 Z" fill="var(--bg)"/>
-        <path d="M30 66 L42 72 M70 66 L58 72" stroke="var(--bg)" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+      <g id="halfWolf">
+        <polygon points="16,8 36,28 10,44" fill="#1E40AF"/>
+        <polygon points="10,44 36,28 34,50" fill="#2563EB"/>
+        <polygon points="36,28 50,34 34,50" fill="#3B82F6"/>
+        <polygon points="50,34 50,60 34,50" fill="#60A5FA"/>
+        <polygon points="10,44 34,50 26,68" fill="#1D4ED8"/>
+        <polygon points="34,50 50,60 36,70" fill="#2563EB"/>
+        <polygon points="34,50 36,70 26,68" fill="#1E3A8A"/>
+        <polygon points="26,68 36,70 42,86" fill="#1E40AF"/>
+        <polygon points="36,70 50,84 42,86" fill="#172554"/>
+        <polygon points="36,70 50,60 50,84" fill="#3B82F6"/>
+        <polygon points="42,86 50,94 50,84" fill="#1E3A8A"/>
+        <polygon points="27,46 40,51 28,54" fill="#7DD3FC"/>
+      </g>
+      <!-- engranaje alrededor -->
+      <circle cx="50" cy="50" r="46.5" fill="none" stroke="var(--accent)" stroke-width="6" stroke-dasharray="6.08 6.08"/>
+      <circle cx="50" cy="50" r="43.5" fill="#07102A" stroke="var(--accent)" stroke-width="2.5"/>
+      <circle cx="50" cy="50" r="38" fill="none" stroke="#1E3A8A" stroke-width="1" stroke-dasharray="2 3"/>
+      <!-- lobo facetado -->
+      <g transform="translate(50 50) scale(.7) translate(-50 -51)">
+        <use href="#halfWolf"/>
+        <use href="#halfWolf" transform="matrix(-1 0 0 1 100 0)"/>
+        <path d="M50 34 64 28 84 8 90 44 74 68 58 86 50 94Z" fill="#000" opacity=".22"/>
+        <polygon points="45,79 55,79 50,86" fill="#020617"/>
       </g>
     </svg>
     <h1>Ing. Wolf</h1>
@@ -104,6 +118,14 @@ var PROJECTS = [
     desc:   {es:"Sistema de análisis de partidos para seleccionar apuestas de bajo riesgo, con reportes y seguimiento en Excel.",
              en:"Match analysis system to pick low-risk bets, with reports and Excel tracking."},
     tags:   ["Análisis","Excel","Automatización"],
+    url:    ""
+  },
+  {
+    status: {es:"En desarrollo", en:"In development"},
+    title:  {es:"Firmador PDF", en:"PDF Signer"},
+    desc:   {es:"Herramienta para firmar documentos PDF de forma rápida y sencilla, sin imprimir ni escanear.",
+             en:"Tool to sign PDF documents quickly and easily, with no printing or scanning."},
+    tags:   ["PDF","Firma","Documentos"],
     url:    ""
   },
   {
