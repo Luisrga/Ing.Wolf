@@ -110,7 +110,7 @@ var PROJECTS = [
     desc:   {es:"Aplicación web para controlar gastos, documentos y kilometraje de vehículos, con control de rentas entre propietario y chofer. Incluye bot de Telegram y lectura de tickets.",
              en:"Web app to track vehicle expenses, documents and mileage, with rental control between owner and driver. Includes a Telegram bot and receipt scanning."},
     tags:   ["Next.js","Supabase","Telegram","PWA"],
-    url:    ""
+    url:    "https://car-control-pi.vercel.app/es/login"
   },
   {
     status: {es:"En desarrollo", en:"In development"},
@@ -126,7 +126,8 @@ var PROJECTS = [
     desc:   {es:"Herramienta para firmar documentos PDF de forma rápida y sencilla, sin imprimir ni escanear.",
              en:"Tool to sign PDF documents quickly and easily, with no printing or scanning."},
     tags:   ["PDF","Firma","Documentos"],
-    url:    ""
+    url:    "firmador.html",
+    sameTab: true
   },
   {
     status: {es:"Próximamente", en:"Coming soon"},
@@ -170,7 +171,7 @@ function render(){
     return '<article class="card"><span class="badge">' + p.status[lang] + '</span>' +
       '<h3>' + p.title[lang] + '</h3><p>' + p.desc[lang] + '</p>' +
       (p.tags.length ? '<div class="tags">' + p.tags.map(function(x){ return '<span>' + x + '</span>'; }).join("") + '</div>' : "") +
-      (p.url ? '<a href="' + p.url + '" target="_blank" rel="noopener">' + t.view + ' →</a>' : "") +
+      (p.url ? '<a href="' + p.url + '"' + (p.sameTab ? '' : ' target="_blank" rel="noopener"') + '>' + t.view + ' →</a>' : "") +
       '</article>';
   }).join("");
 }
