@@ -1,0 +1,45 @@
+# Local stack: Django API + Celery worker + Celery beat, PostgreSQL, RabbitMQ (broker), Redis (results).
+x-app: &app
+  build: .
+  env_file: [.env]
+  depends_on:
+    db: {condition: service_healthy}
+    rabbitmq: {condition: service_healthy}
+    redis: {condition: service_started}
+
+services:
+  db:
+    image: postgres:16
+    environment: {POSTGRES_USER: app, POSTGRES_PASSWORD: app, POSTGRES_DB: app}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app"]
+      interval: 5s
+      retries: 10
+    volumes: [pgdata:/var/lib/postgresql/data]
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports: ["15672:15672"]   # management UI: guest / guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      retries: 10
+
+  redis:
+    image: redis:7
+
+  web:
+    <<: *app
+    command: sh -c "python manage.py migrate && python manage.py seed_brokers && gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+    ports: ["8000:8000"]
+
+  worker:
+    <<: *app
+    command: celery -A config worker --loglevel=info
+
+  beat:
+    <<: *app
+    command: celery -A config beat --loglevel=info
+
+volumes:
+  pgdata:
