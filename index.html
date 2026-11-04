@@ -78,6 +78,67 @@ h2::after{content:"";height:2px;flex:1;background:linear-gradient(90deg,var(--ac
 .contact p{margin:0 0 18px;color:var(--muted)}
 footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:36px}
 
+/* navegación rápida */
+.jump{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:12px}
+.jump a{min-height:40px;padding:0 14px;border-radius:999px;color:var(--muted);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;transition:color .2s,background .2s}
+.jump a:hover{color:var(--accent);background:var(--glow)}
+#proyectos,#servicios{scroll-margin-top:16px}
+
+/* servicios */
+.sub{color:var(--muted);margin:-4px 0 18px}
+.svc{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px}
+.svc .card{padding:0;display:flex;flex-direction:column}
+.svc .media{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,var(--glow),transparent 70%),var(--bg);border-bottom:1px solid var(--border);overflow:hidden}
+.svc .media>svg,.svc .media>img,.svc .media>video,.svc .media>iframe{width:100%;height:100%;display:block;object-fit:cover;border:0}
+.svc .ex{position:absolute;left:10px;top:10px;z-index:2;font-size:.7rem;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--card);border:1px solid var(--border);color:var(--muted)}
+.svc .body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+.svc .body p{flex:1}
+.svc .body .btn{align-self:flex-start}
+/* ilustraciones */
+.a-fill{fill:var(--card)}.a-edge{stroke:var(--border);stroke-width:1.5}
+.a-bar,.a-line{fill:var(--border)}.a-acc{fill:var(--accent)}.a-soft{fill:var(--accent);opacity:.25}
+.a-s{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.a-blink{animation:blink 1.4s steps(2,end) infinite}
+@keyframes blink{50%{opacity:.15}}
+.a-bub{opacity:0;animation:bub 9s infinite}
+@keyframes bub{0%,4%{opacity:0;transform:translateY(8px)}10%,86%{opacity:1;transform:none}96%,100%{opacity:0}}
+.a-scan{animation:scan 3.5s linear infinite}
+@keyframes scan{from{transform:translateY(-30px)}to{transform:translateY(100px)}}
+.a-wave{transform-box:fill-box;transform-origin:center;opacity:0;animation:wave 3s ease-out infinite}
+@keyframes wave{0%{transform:scale(.3);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+.a-bob{animation:float 4s ease-in-out infinite}
+.a-drop{animation:drop 2.4s ease-in infinite}
+@keyframes drop{0%{transform:translateY(-6px);opacity:0}30%{opacity:1}100%{transform:translateY(22px);opacity:0}}
+/* antes / después */
+.ba{position:absolute;inset:0;--pos:50%}
+.ba>svg{position:absolute;inset:0;width:100%;height:100%}
+.ba .before{clip-path:inset(0 calc(100% - var(--pos)) 0 0);filter:saturate(.4) brightness(.72) contrast(.9) blur(.7px)}
+.ba .line{position:absolute;top:0;bottom:0;left:var(--pos);width:2px;background:#fff;box-shadow:0 0 8px rgba(0,0,0,.5)}
+.ba .tg{position:absolute;bottom:8px;font-size:.7rem;font-weight:700;color:#fff;background:rgba(0,0,0,.55);padding:2px 9px;border-radius:999px}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+
+/* chatbot */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.chat-fab{position:fixed;right:16px;bottom:16px;z-index:50;width:60px;height:60px;border-radius:50%;padding:0;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;box-shadow:0 10px 28px var(--glow)}
+.chat-fab::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent);animation:ring 2.6s ease-out infinite;pointer-events:none}
+@keyframes ring{to{transform:scale(1.6);opacity:0}}
+.chat-fab svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.chat{position:fixed;right:16px;bottom:88px;z-index:50;width:min(380px,calc(100vw - 32px));height:min(520px,calc(100vh - 110px));display:flex;flex-direction:column;background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.4);overflow:hidden;animation:pop .25s ease-out}
+.chat[hidden]{display:none}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.97)}}
+.chat header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 6px 6px 16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.chat header button{background:transparent;border:none;color:#fff;padding:0}
+.chat-log{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:88%;padding:9px 13px;border-radius:14px;font-size:.92rem;white-space:pre-wrap;overflow-wrap:anywhere;opacity:0;transform:translateY(8px);animation:rise .3s forwards}
+.msg.bot{align-self:flex-start;background:var(--bg);border:1px solid var(--border);border-bottom-left-radius:4px}
+.msg.user{align-self:flex-end;background:var(--accent);color:var(--on-accent);border-bottom-right-radius:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start}
+.chip{min-height:40px;padding:0 13px;font-size:.85rem;border-radius:999px;border:1px solid var(--accent);background:transparent;color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;cursor:pointer;font-weight:600;font-family:inherit}
+.chip.go{background:var(--accent);color:var(--on-accent)}
+.chat form{display:flex;gap:8px;padding:10px;border-top:1px solid var(--border)}
+.chat form input{flex:1;min-width:0;min-height:44px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);padding:0 12px;font:inherit;font-size:16px}
+.chat form input:focus-visible{outline:3px solid var(--accent);outline-offset:1px}
+
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   .rise,.reveal{opacity:1;transform:none}
@@ -123,11 +184,19 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:36px}
     <p class="name rise" style="--d:3">Luis Gutiérrez Aguilar</p>
     <p class="tag rise" style="--d:4" data-i18n="tagline">Ingeniería, tecnología y proyectos que resuelven problemas reales.</p>
     <div class="links rise" style="--d:5" id="links"></div>
+    <nav class="jump rise" style="--d:6">
+      <a href="#servicios" data-i18n="navServices">Servicios</a>
+      <a href="#proyectos" data-i18n="navProjects">Proyectos</a>
+    </nav>
   </header>
 
   <main>
-    <h2 class="reveal" data-i18n="projects">Proyectos</h2>
+    <h2 class="reveal" id="proyectos" data-i18n="projects">Proyectos</h2>
     <div class="grid" id="projects"></div>
+
+    <h2 class="reveal" id="servicios" data-i18n="servicesTitle">Servicios</h2>
+    <p class="sub reveal" data-i18n="servicesSub"></p>
+    <div class="svc" id="services"></div>
 
     <section class="contact reveal">
       <h2 data-i18n="contactTitle">Hablemos</h2>
@@ -138,6 +207,19 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:36px}
 
   <footer>© <span id="year"></span> Ing. Wolf · Luis Gutiérrez Aguilar</footer>
 </div>
+
+<button class="chat-fab" id="chatFab" type="button" aria-expanded="false" aria-controls="chatPanel">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg>
+  <span class="sr" id="chatFabLabel"></span>
+</button>
+<section class="chat" id="chatPanel" role="dialog" hidden>
+  <header><strong id="chatTitle"></strong><button id="chatClose" type="button">✕</button></header>
+  <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
+  <form id="chatForm" autocomplete="off">
+    <input id="chatInput" type="text" maxlength="300">
+    <button class="btn primary" id="chatSend" type="submit"></button>
+  </form>
+</section>
 
 <script>
 // ====== EDITA AQUÍ ======
@@ -187,10 +269,16 @@ var PROJECTS = [
 var TEXT = {
   es:{tagline:"Ingeniería, tecnología y proyectos que resuelven problemas reales.",projects:"Proyectos",
       contactTitle:"Hablemos",contactText:"¿Tienes un proyecto en mente? Escríbeme.",cta:"Escríbeme por WhatsApp",
+      navServices:"Servicios",navProjects:"Proyectos",servicesTitle:"Servicios",
+      servicesSub:"Soluciones de tecnología para tu casa o negocio. Elige un servicio y cotiza con el asistente.",
+      example:"Ejemplo ilustrativo",quote:"Cotizar",before:"Antes",after:"Después",slide:"Desliza para comparar",
       linkedin:"LinkedIn",instagram:"Instagram",whatsapp:"WhatsApp",view:"Ver proyecto",
       toDark:"🌙 Oscuro",toLight:"☀️ Claro",otherLang:"English"},
   en:{tagline:"Engineering, technology and projects that solve real problems.",projects:"Projects",
       contactTitle:"Let's talk",contactText:"Have a project in mind? Message me.",cta:"Message me on WhatsApp",
+      navServices:"Services",navProjects:"Projects",servicesTitle:"Services",
+      servicesSub:"Technology solutions for your home or business. Pick a service and get a quote with the assistant.",
+      example:"Illustrative example",quote:"Get a quote",before:"Before",after:"After",slide:"Slide to compare",
       linkedin:"LinkedIn",instagram:"Instagram",whatsapp:"WhatsApp",view:"View project",
       toDark:"🌙 Dark",toLight:"☀️ Light",otherLang:"Español"}
 };
@@ -199,6 +287,272 @@ var ICONS = {
   instagram:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>',
   whatsapp:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>'
 };
+// ---- Servicios ----
+var WA = "https://wa.me/529982212631?text=";
+// Para usar tus propias fotos o videos en un servicio, llena "media" con una de estas opciones:
+//   {type:"img", src:"assets/casa.jpg"}
+//   {type:"video", src:"assets/recorrido.mp4", poster:"assets/casa.jpg"}
+//   {type:"youtube", id:"ID_DEL_VIDEO"}
+var SERVICES = [
+  { id:"web", art:"web", media:null,
+    short:{es:"Páginas web", en:"Websites"},
+    title:{es:"Páginas web a tu medida", en:"Custom websites"},
+    desc:{es:"Diseño y desarrollo de tu página web. Sin suscripción: un solo pago que cubre un año, con SEO para que te encuentren en Google.",
+          en:"Design and development of your website. No subscription: a single payment that covers one year, with SEO so customers can find you on Google."},
+    tags:{es:["Pago único","Sin suscripción","SEO"], en:["One-time payment","No subscription","SEO"]},
+    kw:["pagina","web","sitio","website","seo","landing"] },
+  { id:"estate", art:"estate", media:null,
+    short:{es:"Bienes raíces", en:"Real estate"},
+    title:{es:"Renderizado para bienes raíces", en:"Real estate rendering"},
+    desc:{es:"Mejoramos la calidad de las fotos de tu propiedad y creamos el video de recorrido para que se venda o se rente más rápido.",
+          en:"We enhance your property photos and produce a walkthrough video so it sells or rents faster."},
+    kw:["inmueble","bienes","raiz","propiedad","casa","render","real estate","property","tour","recorrido"] },
+  { id:"menu", art:"menu", media:null,
+    short:{es:"Menús", en:"Menus"},
+    title:{es:"Menús para restaurantes", en:"Restaurant menus"},
+    desc:{es:"Diseño de menús para tu restaurante, listos para imprimir o compartir en digital.",
+          en:"Menu design for your restaurant, ready to print or share digitally."},
+    kw:["menu","restaurante","restaurant","comida"] },
+  { id:"catalog", art:"catalog", media:null,
+    short:{es:"Catálogos", en:"Catalogs"},
+    title:{es:"Catálogos de productos", en:"Product catalogs"},
+    desc:{es:"Catálogos listos para compartir con tus clientes, con fotos, descripciones y precios de tus productos.",
+          en:"Catalogs ready to share with your customers, with photos, descriptions and prices."},
+    kw:["catalogo","catalog","producto","product"] },
+  { id:"chatbot", art:"chat", media:null,
+    short:{es:"Chatbot con IA", en:"AI chatbot"},
+    title:{es:"Chatbot con IA", en:"AI chatbot"},
+    desc:{es:"Un asistente automático que da seguimiento a tus prospectos, ayuda a vender y atiende la posventa de tus clientes.",
+          en:"An automated assistant that follows up on your leads, helps you sell and handles after-sales support."},
+    kw:["chatbot","bot","ia","ai","lead","prospecto","venta","posventa","seguimiento","sales"] },
+  { id:"cctv", art:"cctv", media:null,
+    short:{es:"Cámaras (CCTV)", en:"CCTV cameras"},
+    title:{es:"Sistemas de seguridad (CCTV)", en:"Security systems (CCTV)"},
+    desc:{es:"Instalación y configuración de cámaras de videovigilancia para tu casa o negocio.",
+          en:"Installation and setup of video surveillance cameras for your home or business."},
+    kw:["cctv","camara","camera","vigilancia","seguridad","security","surveillance"] },
+  { id:"support", art:"server", media:null,
+    short:{es:"Soporte y redes", en:"Support & networks"},
+    title:{es:"Soporte de sistemas, redes y servidores", en:"Systems, networks and servers"},
+    desc:{es:"Soporte técnico, sistemas y redes, instalación y mantenimiento de servidores Microsoft y Linux.",
+          en:"Technical support, systems and networks, plus installation and maintenance of Microsoft and Linux servers."},
+    kw:["soporte","support","servidor","server","red","redes","network","linux","microsoft","windows","sistemas"] },
+  { id:"pc", art:"pc", media:null,
+    short:{es:"Equipo de cómputo", en:"Computers"},
+    title:{es:"Venta y mantenimiento de equipo de cómputo", en:"Computer sales and maintenance"},
+    desc:{es:"Venta de equipo de cómputo y mantenimiento para que tus computadoras trabajen como el primer día.",
+          en:"Computer sales and maintenance to keep your machines running like new."},
+    kw:["computadora","laptop","equipo","computo","pc","mantenimiento","computer","repair","reparacion"] },
+  { id:"antivirus", art:"shield", media:null,
+    short:{es:"Antivirus y firewall", en:"Antivirus & firewall"},
+    title:{es:"Antivirus y firewall", en:"Antivirus and firewall"},
+    desc:{es:"Protege tus equipos y tu red contra virus, ataques y accesos no autorizados.",
+          en:"Protect your devices and network against viruses, attacks and unauthorized access."},
+    kw:["antivirus","firewall","virus","malware","proteccion"] },
+  { id:"ink", art:"printer", media:null,
+    short:{es:"Consumibles", en:"Printer supplies"},
+    title:{es:"Consumibles para impresoras", en:"Printer supplies"},
+    desc:{es:"Consumibles para impresoras multifuncionales de todas las marcas.",
+          en:"Supplies for multifunction printers of all brands."},
+    kw:["impresora","toner","tinta","consumible","printer","ink","cartucho"] },
+  { id:"wifi", art:"wifi", media:null,
+    short:{es:"Wi-Fi (APs)", en:"Wi-Fi (APs)"},
+    title:{es:"Instalación de APs (Wi-Fi)", en:"Wi-Fi access point installation"},
+    desc:{es:"Cobertura Wi-Fi estable en toda tu casa, oficina o negocio con puntos de acceso bien ubicados.",
+          en:"Stable Wi-Fi coverage across your home, office or business with well-placed access points."},
+    kw:["wifi","wi-fi","ap","aps","acceso","inalambrico","wireless","internet","senal"] }
+];
+
+function houseSvg(cls){
+  return '<svg class="' + cls + '" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="sky' + cls + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset="1" stop-color="#DBEAFE"/></linearGradient></defs>' +
+    '<rect width="320" height="180" fill="url(#sky' + cls + ')"/><circle cx="262" cy="36" r="16" fill="#FDE68A"/><rect y="130" width="320" height="50" fill="#4ADE80"/>' +
+    '<rect x="90" y="70" width="140" height="66" fill="#F8FAFC"/><polygon points="80,72 160,28 240,72" fill="#B45309"/><rect x="148" y="98" width="24" height="38" fill="#1E3A8A"/>' +
+    '<rect x="104" y="86" width="28" height="22" fill="#FDE047"/><rect x="188" y="86" width="28" height="22" fill="#FDE047"/></svg>';
+}
+function svg(inner){ return '<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + inner + '</svg>'; }
+
+var ART = {
+  web: function(){ return svg(
+    '<rect x="30" y="16" width="260" height="148" rx="10" class="a-fill a-edge"/><rect x="30" y="16" width="260" height="22" rx="10" class="a-bar"/>' +
+    '<circle cx="46" cy="27" r="3.5" fill="#F87171"/><circle cx="58" cy="27" r="3.5" fill="#FBBF24"/><circle cx="70" cy="27" r="3.5" fill="#34D399"/>' +
+    '<rect class="a-acc a-blink" x="48" y="52" width="130" height="14" rx="4"/><rect class="a-line" x="48" y="74" width="190" height="8" rx="4"/><rect class="a-line" x="48" y="90" width="160" height="8" rx="4"/>' +
+    '<rect class="a-soft" x="48" y="112" width="70" height="34" rx="6"/><rect class="a-soft" x="126" y="112" width="70" height="34" rx="6"/><rect class="a-soft" x="204" y="112" width="70" height="34" rx="6"/>'); },
+  estate: function(t){ return '<div class="ba">' + houseSvg('after') + houseSvg('before') +
+    '<span class="line"></span><span class="tg" style="left:8px">' + t.before + '</span><span class="tg" style="right:8px">' + t.after + '</span>' +
+    '<input class="ba-range" type="range" min="0" max="100" value="50" aria-label="' + t.slide + '"></div>'; },
+  menu: function(){
+    var rows = ''; for (var i = 0; i < 5; i++) rows += '<rect class="a-line" x="108" y="' + (56 + i * 22) + '" width="70" height="7" rx="3"/><rect class="a-acc" x="192" y="' + (56 + i * 22) + '" width="22" height="7" rx="3"/>';
+    return svg('<rect x="95" y="12" width="130" height="156" rx="8" class="a-fill a-edge"/><rect class="a-acc" x="130" y="26" width="60" height="10" rx="4"/>' + rows); },
+  catalog: function(){
+    var t = ''; for (var r = 0; r < 2; r++) for (var c = 0; c < 3; c++) { var x = 22 + c * 96, y = 14 + r * 82;
+      t += '<rect x="' + x + '" y="' + y + '" width="88" height="74" rx="8" class="a-fill a-edge"/><rect class="a-soft" x="' + (x + 6) + '" y="' + (y + 6) + '" width="76" height="36" rx="5"/><rect class="a-line" x="' + (x + 6) + '" y="' + (y + 48) + '" width="50" height="6" rx="3"/><rect class="a-acc" x="' + (x + 6) + '" y="' + (y + 60) + '" width="26" height="6" rx="3"/>'; }
+    return svg(t); },
+  chat: function(){ return svg(
+    '<g class="a-bub"><rect x="24" y="18" width="150" height="32" rx="12" class="a-fill a-edge"/><rect class="a-line" x="38" y="28" width="100" height="6" rx="3"/><rect class="a-line" x="38" y="38" width="64" height="6" rx="3"/></g>' +
+    '<g class="a-bub" style="animation-delay:1.6s"><rect x="146" y="62" width="150" height="32" rx="12" class="a-acc"/><rect x="160" y="72" width="96" height="6" rx="3" fill="#fff" opacity=".85"/><rect x="160" y="82" width="60" height="6" rx="3" fill="#fff" opacity=".85"/></g>' +
+    '<g class="a-bub" style="animation-delay:3.2s"><rect x="24" y="106" width="176" height="44" rx="12" class="a-fill a-edge"/><rect class="a-line" x="38" y="116" width="140" height="6" rx="3"/><rect class="a-line" x="38" y="127" width="110" height="6" rx="3"/><rect class="a-acc" x="38" y="138" width="40" height="6" rx="3"/></g>'); },
+  cctv: function(){
+    var t = ''; for (var i = 0; i < 4; i++) { var x = 20 + (i % 2) * 144, y = 14 + Math.floor(i / 2) * 80;
+      t += '<svg x="' + x + '" y="' + y + '" width="136" height="74"><rect width="136" height="74" rx="6" fill="#0B1224"/><polygon points="0,56 136,48 136,74 0,74" fill="#14233F"/><rect class="a-acc a-scan" style="animation-delay:' + (i * .6) + 's" width="136" height="14" opacity=".22"/><circle class="a-blink" cx="14" cy="13" r="4" fill="#F87171" style="animation-delay:' + (i * .3) + 's"/><rect x="24" y="10" width="22" height="6" rx="3" fill="#94A3B8" opacity=".6"/></svg>'; }
+    return svg(t); },
+  server: function(){
+    var t = ''; for (var i = 0; i < 3; i++) { var y = 16 + i * 52;
+      t += '<rect x="56" y="' + y + '" width="208" height="42" rx="6" class="a-fill a-edge"/><rect class="a-line" x="70" y="' + (y + 12) + '" width="90" height="6" rx="3"/><rect class="a-line" x="70" y="' + (y + 24) + '" width="60" height="6" rx="3"/>' +
+        '<circle class="a-blink" style="animation-delay:' + (i * .4) + 's" cx="228" cy="' + (y + 21) + '" r="4" fill="#34D399"/><circle class="a-blink" style="animation-delay:' + (i * .4 + .7) + 's" cx="244" cy="' + (y + 21) + '" r="4" fill="#3B82F6"/>'; }
+    return svg(t); },
+  pc: function(){ return svg('<g class="a-bob"><rect x="70" y="22" width="180" height="108" rx="8" fill="#0B1224" class="a-edge"/><rect class="a-acc" x="88" y="40" width="60" height="7" rx="3"/><rect class="a-soft" x="88" y="56" width="110" height="7" rx="3"/><rect class="a-soft" x="104" y="72" width="90" height="7" rx="3"/><rect class="a-acc" x="104" y="88" width="46" height="7" rx="3"/><rect class="a-soft" x="88" y="104" width="76" height="7" rx="3"/><polygon points="50,136 270,136 250,152 70,152" class="a-fill a-edge"/></g>'); },
+  shield: function(){ return svg('<circle class="a-s a-wave" cx="160" cy="92" r="60"/><path class="a-soft" d="M160 22 L226 46 V92 C226 128 196 148 160 160 C124 148 94 128 94 92 V46 Z"/><path class="a-s" d="M160 22 L226 46 V92 C226 128 196 148 160 160 C124 148 94 128 94 92 V46 Z"/><path class="a-s" style="stroke-width:8" d="M130 92 L152 114 L192 70"/>'); },
+  printer: function(){
+    var cols = ['#22D3EE','#E879F9','#FACC15','#64748B'], d = '';
+    for (var i = 0; i < 4; i++) d += '<circle class="a-drop" style="animation-delay:' + (i * .5) + 's" cx="' + (118 + i * 30) + '" cy="146" r="5" fill="' + cols[i] + '"/>';
+    return svg('<rect x="110" y="22" width="100" height="56" rx="4" class="a-fill a-edge"/><rect class="a-line" x="124" y="36" width="72" height="6" rx="3"/><rect class="a-line" x="124" y="48" width="50" height="6" rx="3"/><rect x="80" y="70" width="160" height="62" rx="10" class="a-fill a-edge"/><rect class="a-acc" x="96" y="84" width="34" height="8" rx="4"/><rect class="a-soft" x="96" y="102" width="128" height="10" rx="5"/>' + d); },
+  wifi: function(){ return svg(
+    '<circle class="a-s a-wave" cx="160" cy="112" r="56"/><circle class="a-s a-wave" style="animation-delay:1s" cx="160" cy="112" r="56"/><circle class="a-s a-wave" style="animation-delay:2s" cx="160" cy="112" r="56"/>' +
+    '<rect class="a-acc" x="128" y="112" width="64" height="16" rx="8"/><circle cx="144" cy="120" r="3" fill="#fff"/>' +
+    '<rect class="a-soft" x="46" y="124" width="32" height="22" rx="4"/><rect class="a-soft" x="244" y="110" width="30" height="22" rx="4"/><rect class="a-soft" x="226" y="34" width="22" height="34" rx="5"/><rect class="a-soft" x="72" y="40" width="34" height="24" rx="4"/>'); }
+};
+
+function mediaFor(s, t){
+  var m = s.media;
+  if (m) {
+    if (m.type === "img") return '<img src="' + m.src + '" alt="' + s.title[lang] + '" loading="lazy">';
+    if (m.type === "video") return '<video controls playsinline preload="metadata" src="' + m.src + '"' + (m.poster ? ' poster="' + m.poster + '"' : '') + '></video>';
+    if (m.type === "youtube") return '<iframe src="https://www.youtube-nocookie.com/embed/' + m.id + '" title="' + s.title[lang] + '" loading="lazy" allowfullscreen></iframe>';
+  }
+  return ART[s.art](t) + '<span class="ex">' + t.example + '</span>';
+}
+
+var svcLang = null;
+function renderServices(t){
+  if (svcLang === lang) return;
+  svcLang = lang;
+  var box = document.getElementById("services");
+  box.innerHTML = SERVICES.map(function(s, i){
+    return '<article class="card reveal" style="--d:' + (i % 3) + '"><div class="media">' + mediaFor(s, t) + '</div><div class="body">' +
+      '<h3>' + s.title[lang] + '</h3><p>' + s.desc[lang] + '</p>' +
+      (s.tags ? '<div class="tags">' + s.tags[lang].map(function(x){ return '<span>' + x + '</span>'; }).join("") + '</div>' : "") +
+      '<button class="btn" type="button" data-svc="' + s.id + '">' + t.quote + ' <span>→</span></button></div></article>';
+  }).join("");
+  box.querySelectorAll(".reveal").forEach(watch);
+}
+document.getElementById("services").addEventListener("click", function(e){
+  var b = e.target.closest("[data-svc]");
+  if (b) quoteFor(b.getAttribute("data-svc"));
+});
+document.addEventListener("input", function(e){
+  if (e.target.classList && e.target.classList.contains("ba-range")) e.target.closest(".ba").style.setProperty("--pos", e.target.value + "%");
+});
+
+// ---- Chatbot (asistente por reglas: califica al cliente y lo manda a WhatsApp) ----
+var CHAT = {
+  es:{title:"Asistente Ing. Wolf",open:"Abrir asistente",close:"Cerrar asistente",placeholder:"Escribe tu mensaje…",send:"Enviar",
+      hello:"¡Hola! 👋 Soy el asistente de Ing. Wolf. ¿Qué servicio te interesa?",pick:"Estos son los servicios disponibles:",
+      quote:"Cotizar",other:"Ver otros servicios",human:"Hablar con Luis",askName:"Con gusto. ¿Cómo te llamas?",
+      askDetail:function(n){ return "Mucho gusto, " + n + ". Cuéntame brevemente qué necesitas."; },
+      ready:"¡Listo! Toca el botón para enviar tu solicitud a Luis por WhatsApp.",wa:"Enviar por WhatsApp",
+      price:"El precio depende de lo que necesites, pero con gusto te cotizo. ¿Qué servicio te interesa?",
+      fallback:"No estoy seguro de haber entendido. Elige un servicio o escríbele directo a Luis.",
+      about:function(n){ return "Quiero cotizar: " + n; },
+      msg:function(n, s, d){ return "Hola Luis, soy " + n + ". Me interesa: " + s + ". " + d; }},
+  en:{title:"Ing. Wolf Assistant",open:"Open assistant",close:"Close assistant",placeholder:"Type your message…",send:"Send",
+      hello:"Hi! 👋 I'm the Ing. Wolf assistant. Which service are you interested in?",pick:"These are the available services:",
+      quote:"Get a quote",other:"See other services",human:"Talk to Luis",askName:"Happy to help. What's your name?",
+      askDetail:function(n){ return "Nice to meet you, " + n + ". Briefly tell me what you need."; },
+      ready:"All set! Tap the button to send your request to Luis on WhatsApp.",wa:"Send via WhatsApp",
+      price:"The price depends on what you need, but I'll gladly quote you. Which service are you interested in?",
+      fallback:"I'm not sure I understood. Pick a service or message Luis directly.",
+      about:function(n){ return "I'd like a quote for: " + n; },
+      msg:function(n, s, d){ return "Hi Luis, I'm " + n + ". I'm interested in: " + s + ". " + d; }}
+};
+var chat = { step:"idle", service:null, name:"", lang:null };
+var elChat = document.getElementById("chatPanel"), elLog = document.getElementById("chatLog"), elInput = document.getElementById("chatInput"), elFab = document.getElementById("chatFab");
+
+function C(){ return CHAT[lang]; }
+function norm(s){ return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+function addMsg(who, text, chips){
+  var m = document.createElement("div"); m.className = "msg " + who; m.textContent = text; elLog.appendChild(m);
+  if (chips && chips.length) {
+    var row = document.createElement("div"); row.className = "chips";
+    chips.forEach(function(c){
+      var b;
+      if (c.href) { b = document.createElement("a"); b.href = c.href; b.target = "_blank"; b.rel = "noopener"; b.className = "chip go"; }
+      else { b = document.createElement("button"); b.type = "button"; b.className = "chip";
+        b.addEventListener("click", function(){ row.remove(); addMsg("user", c.label); setTimeout(c.go, 350); }); }
+      b.textContent = c.label; row.appendChild(b);
+    });
+    elLog.appendChild(row);
+  }
+  elLog.scrollTop = elLog.scrollHeight;
+}
+function serviceChips(){
+  return SERVICES.map(function(s){ return { label:s.short[lang], go:function(){ pickService(s); } }; })
+    .concat([{ label:C().human, href:WA + encodeURIComponent(lang === "es" ? "Hola Luis, vi tu página y quiero información." : "Hi Luis, I saw your website and I'd like more information.") }]);
+}
+function pickService(s){
+  chat.service = s;
+  addMsg("bot", s.desc[lang], [{ label:C().quote, go:startQuote }, { label:C().other, go:function(){ addMsg("bot", C().pick, serviceChips()); } }]);
+}
+function startQuote(){
+  if (chat.name) { chat.step = "detail"; addMsg("bot", C().askDetail(chat.name)); }
+  else { chat.step = "name"; addMsg("bot", C().askName); }
+}
+function finishQuote(detail){
+  chat.step = "idle";
+  var text = C().msg(chat.name, chat.service ? chat.service.title[lang] : "-", detail);
+  addMsg("bot", C().ready, [{ label:C().wa, href:WA + encodeURIComponent(text) }]);
+}
+function matchService(text){
+  var q = norm(text), words = q.split(/[^a-z0-9\-]+/);
+  for (var i = 0; i < SERVICES.length; i++) for (var k = 0; k < SERVICES[i].kw.length; k++) {
+    var w = SERVICES[i].kw[k];
+    if (words.indexOf(w) > -1 || (w.length > 3 && q.indexOf(w) > -1)) return SERVICES[i];
+  }
+  return null;
+}
+function route(text){
+  if (chat.step === "name") { chat.name = text.slice(0, 60); chat.step = "detail"; addMsg("bot", C().askDetail(chat.name)); return; }
+  if (chat.step === "detail") { finishQuote(text.slice(0, 300)); return; }
+  var s = matchService(text);
+  if (s) { pickService(s); return; }
+  if (/precio|costo|cuanto|cotiz|price|cost|quote|how much/i.test(norm(text))) { addMsg("bot", C().price, serviceChips()); return; }
+  if (/^(hola|buen|hello|hi|hey)/i.test(norm(text))) { addMsg("bot", C().hello, serviceChips()); return; }
+  addMsg("bot", C().fallback, serviceChips());
+}
+function chatReset(){
+  elLog.innerHTML = ""; chat.step = "idle"; chat.service = null; chat.name = "";
+  addMsg("bot", C().hello, serviceChips());
+}
+function chatRefresh(){
+  var c = C();
+  document.getElementById("chatTitle").textContent = c.title;
+  document.getElementById("chatClose").setAttribute("aria-label", c.close);
+  document.getElementById("chatFabLabel").textContent = c.open;
+  document.getElementById("chatSend").textContent = c.send;
+  elInput.placeholder = c.placeholder;
+  elChat.setAttribute("aria-label", c.title);
+  if (chat.lang !== lang) { chat.lang = lang; chatReset(); }
+}
+function setChat(open){
+  elChat.hidden = !open;
+  elFab.setAttribute("aria-expanded", open ? "true" : "false");
+  if (open) { elInput.focus(); elLog.scrollTop = elLog.scrollHeight; }
+}
+function quoteFor(id){
+  var s = SERVICES.filter(function(x){ return x.id === id; })[0];
+  if (!s) return;
+  setChat(true); chat.service = s;
+  addMsg("user", C().about(s.short[lang]));
+  setTimeout(startQuote, 350);
+}
+elFab.addEventListener("click", function(){ setChat(elChat.hidden); });
+document.getElementById("chatClose").addEventListener("click", function(){ setChat(false); elFab.focus(); });
+elChat.addEventListener("keydown", function(e){ if (e.key === "Escape") { setChat(false); elFab.focus(); } });
+document.getElementById("chatForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  var v = elInput.value.trim(); if (!v) return;
+  elInput.value = ""; addMsg("user", v); setTimeout(function(){ route(v); }, 350);
+});
+
 // ========================
 
 var root = document.documentElement;
@@ -238,6 +592,8 @@ function render(){
       '</article>';
   }).join("");
   box.querySelectorAll(".reveal").forEach(watch);
+  renderServices(t);
+  chatRefresh();
 }
 
 document.getElementById("lang").addEventListener("click", function(){ lang = lang === "es" ? "en" : "es"; save("lang", lang); render(); });
