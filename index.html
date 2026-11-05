@@ -78,11 +78,16 @@ h2::after{content:"";height:2px;flex:1;background:linear-gradient(90deg,var(--ac
 .contact p{margin:0 0 18px;color:var(--muted)}
 footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:36px}
 
-/* navegación rápida */
-.jump{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:12px}
-.jump a{min-height:40px;padding:0 14px;border-radius:999px;color:var(--muted);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;transition:color .2s,background .2s}
-.jump a:hover{color:var(--accent);background:var(--glow)}
-#proyectos,#servicios{scroll-margin-top:16px}
+/* botones principales que despliegan secciones */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;scroll-margin-top:12px}
+.tab{min-height:68px;padding:0 10px;border:2px solid var(--accent);border-radius:16px;background:var(--card);color:var(--text);font-size:clamp(.9rem,3.8vw,1.1rem);font-weight:800;letter-spacing:.14em;text-transform:uppercase;gap:10px;box-shadow:0 8px 24px var(--glow)}
+.tab:hover{background:var(--glow)}
+.tab i{width:10px;height:10px;border-right:3px solid currentColor;border-bottom:3px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);transition:transform .3s}
+.tab[aria-expanded="true"]{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff}
+.tab[aria-expanded="true"] i{transform:rotate(-135deg) translate(-2px,-2px)}
+.panel{margin-top:6px}
+.panel:not([hidden]){animation:pop .35s ease-out}
+.panel[hidden]{display:none}
 
 /* servicios */
 .sub{color:var(--muted);margin:-4px 0 18px}
@@ -183,20 +188,22 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:36px}
     <h1 class="rise" style="--d:2">Ing. Wolf</h1>
     <p class="name rise" style="--d:3">Luis Gutiérrez Aguilar</p>
     <p class="tag rise" style="--d:4" data-i18n="tagline">Ingeniería, tecnología y proyectos que resuelven problemas reales.</p>
-    <div class="links rise" style="--d:5" id="links"></div>
-    <nav class="jump rise" style="--d:6">
-      <a href="#servicios" data-i18n="navServices">Servicios</a>
-      <a href="#proyectos" data-i18n="navProjects">Proyectos</a>
-    </nav>
-  </header>
+    <div class="links rise" style="--d:5" id="links"></div>  </header>
 
   <main>
-    <h2 class="reveal" id="proyectos" data-i18n="projects">Proyectos</h2>
-    <div class="grid" id="projects"></div>
+    <div class="tabs rise" style="--d:6" id="tabs">
+      <button class="tab" type="button" aria-expanded="false" aria-controls="panel-services"><span data-i18n="navServices">Servicios</span><i aria-hidden="true"></i></button>
+      <button class="tab" type="button" aria-expanded="false" aria-controls="panel-projects"><span data-i18n="navProjects">Proyectos</span><i aria-hidden="true"></i></button>
+    </div>
 
-    <h2 class="reveal" id="servicios" data-i18n="servicesTitle">Servicios</h2>
-    <p class="sub reveal" data-i18n="servicesSub"></p>
-    <div class="svc" id="services"></div>
+    <section class="panel" id="panel-services" hidden>
+      <p class="sub" data-i18n="servicesSub"></p>
+      <div class="svc" id="services"></div>
+    </section>
+
+    <section class="panel" id="panel-projects" hidden>
+      <div class="grid" id="projects"></div>
+    </section>
 
     <section class="contact reveal">
       <h2 data-i18n="contactTitle">Hablemos</h2>
@@ -560,6 +567,22 @@ document.getElementById("chatForm").addEventListener("submit", function(e){
   var v = elInput.value.trim(); if (!v) return;
   elInput.value = ""; addMsg("user", v); setTimeout(function(){ route(v); }, 350);
 });
+
+// ---- Secciones desplegables ----
+var tabs = document.querySelectorAll(".tab");
+function openPanel(id){
+  tabs.forEach(function(b){
+    var on = b.getAttribute("aria-controls") === id && b.getAttribute("aria-expanded") !== "true";
+    b.setAttribute("aria-expanded", on ? "true" : "false");
+    document.getElementById(b.getAttribute("aria-controls")).hidden = !on;
+  });
+  if (!document.getElementById(id).hidden) {
+    setTimeout(function(){ document.getElementById("tabs").scrollIntoView({ behavior:"smooth", block:"start" }); }, 60);
+  }
+}
+tabs.forEach(function(b){ b.addEventListener("click", function(){ openPanel(b.getAttribute("aria-controls")); }); });
+if (location.hash === "#servicios") openPanel("panel-services");
+else if (location.hash === "#proyectos") openPanel("panel-projects");
 
 // ========================
 
