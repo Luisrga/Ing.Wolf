@@ -86,6 +86,10 @@ section{padding:34px 0 6px}
 .acts{display:grid;gap:10px;margin-top:16px}
 .acts .pill{justify-content:center;width:100%}
 .acts .lnk{background:none;border:0;box-shadow:none;text-decoration:underline;min-height:40px}
+.cust{grid-column:1/-1;justify-self:start;min-height:36px;padding:0 14px;font-size:.85rem;box-shadow:2px 2px 0 var(--ink)}
+.eh{font-family:"Bowlby One";font-weight:400;font-size:1.05rem;margin:16px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+.chips .sec{flex-basis:100%}
 .wl{list-style:none;padding:0;margin:8px 0}
 .wl li{font-size:1.5rem;font-weight:700;padding:10px 0;border-bottom:2px solid var(--ink);line-height:1.25}
 .wl li b{font-family:"Bowlby One";font-weight:400;margin-right:8px}
@@ -242,7 +246,8 @@ var UI = {
       pick:"Elige y agrega",add:"Agregar",cart:"Mi pedido",cartEmpty:"Aún no has agregado nada. Elige el platillo arriba y toca + junto al guisado.",
       total:"Total",who:"Mesa o nombre (opcional)",notes:"Notas (opcional)",notesPh:"Ej. sin crema, guisado extra…",
       send:"Enviar por WhatsApp",waiter:"Mostrar al mesero",back:"Volver",clear:"Vaciar pedido",close:"Cerrar",
-      showW:"Muestra esta pantalla al mesero",each:"c/u",hello:"Hola Mary Kekas, quiero hacer un pedido 🌮",tableL:"Mesa/Nombre",notesL:"Notas",rm:"Quitar",ivaN:"Precios con IVA incluido."},
+      showW:"Muestra esta pantalla al mesero",each:"c/u",hello:"Hola Mary Kekas, quiero hacer un pedido 🌮",tableL:"Mesa/Nombre",notesL:"Notas",rm:"Quitar",ivaN:"Precios con IVA incluido.",
+      custom:"Personalizar",extraG:"Guisado extra",comps:"Complementos (+$8 c/u)",save:"Guardar",cancel:"Cancelar",onePiece:"Aplica a 1 pieza",extraWord:"extra",unitP:"Precio de esta pieza"},
   en:{order:"Order on WhatsApp",tagline:"Handcrafted street food made with traditional recipes",
       guisado:"Extra filling",comp:"Extra toppings",promos:"Specials",drinks:"Drinks",deliv:"Delivery",visit:"Visit us",
       iva:"All our prices include VAT.",demo:'Demo digital menu created by <a href="../">Ing. Wolf</a>.',
@@ -254,7 +259,8 @@ var UI = {
       pick:"Choose and add",add:"Add",cart:"My order",cartEmpty:"Nothing added yet. Pick the dish above and tap + next to the filling.",
       total:"Total",who:"Table or name (optional)",notes:"Notes (optional)",notesPh:"E.g. no cream, extra filling…",
       send:"Send on WhatsApp",waiter:"Show to the waiter",back:"Back",clear:"Clear order",close:"Close",
-      showW:"Show this screen to the waiter",each:"each",hello:"Hi Mary Kekas, I'd like to place an order 🌮",tableL:"Table/Name",notesL:"Notes",rm:"Remove",ivaN:"Prices include VAT."}
+      showW:"Show this screen to the waiter",each:"each",hello:"Hi Mary Kekas, I'd like to place an order 🌮",tableL:"Table/Name",notesL:"Notes",rm:"Remove",ivaN:"Prices include VAT.",
+      custom:"Customize",extraG:"Extra filling",comps:"Extra toppings (+$8 each)",save:"Save",cancel:"Cancel",onePiece:"Applies to 1 piece",extraWord:"extra",unitP:"Price of this piece"}
 };
 
 var cur = 0;
@@ -377,19 +383,43 @@ window.addEventListener("scroll", function(){
 
 // ===== Carrito / pedido =====
 var cart = {}, cnote = "", cwho = "", selP = [0, 0, 0], sheetOpen = false, waiterMode = false;
+var editK = null, editX = [], editC = [];
 try { var sv = JSON.parse(localStorage.getItem("mk-cart") || "null"); if (sv) { cart = sv.c || {}; cnote = sv.n || ""; cwho = sv.w || ""; } } catch(e){}
 function saveCart(){ try { localStorage.setItem("mk-cart", JSON.stringify({c:cart, n:cnote, w:cwho})); } catch(e){} }
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+var COMP_PRICE = 8;
+function tierOf(item){ for (var i = 0; i < SECS.length; i++) if (SECS[i].items.indexOf(item) >= 0) return i; return -1; }
+function allItems(){ var a = []; SECS.forEach(function(s){ a = a.concat(s.items); }); return a; }
+// Clave: "g|grupo|platillo|guisado" o "d|bebida", con extras opcionales: "#x:guisado,guisado;c:comp,comp"
+function encodeMods(xs, cs){
+  var X = allItems().filter(function(k){ return xs.indexOf(k) >= 0; });
+  var C = COMP.map(function(c){ return c[0]; }).filter(function(k){ return cs.indexOf(k) >= 0; });
+  return (X.length || C.length) ? "#x:" + X.join(",") + ";c:" + C.join(",") : "";
+}
+function parseKey(key){
+  var parts = key.split("#"), mods = parts[1] || "", xs = [], cs = [];
+  mods.split(";").forEach(function(m){
+    if (m.indexOf("x:") === 0) xs = m.slice(2).split(",").filter(Boolean);
+    else if (m.indexOf("c:") === 0) cs = m.slice(2).split(",").filter(Boolean);
+  });
+  return {base:parts[0], xs:xs, cs:cs};
+}
 function lineInfo(key){
-  var p = key.split("|");
-  if (p[0] === "d") { var d = DRINKS[+p[1]]; return d ? {name:d.n[lang], price:d.p} : null; }
+  var pk = parseKey(key), p = pk.base.split("|");
+  if (p[0] === "d") { var d = DRINKS[+p[1]]; return d ? {name:d.n[lang], price:d.p, base:pk.base, drink:true, xs:[], cs:[]} : null; }
   var g = GROUPS[+p[1]]; if (!g || !g.photos[+p[2]] || !I[p[3]]) return null;
-  for (var i = 0; i < SECS.length; i++) if (SECS[i].items.indexOf(p[3]) >= 0) return {name:g.photos[+p[2]][1][lang] + " — " + I[p[3]][lang], price:g.price[i]};
-  return null;
+  var t = tierOf(p[3]); if (t < 0) return null;
+  var name = g.photos[+p[2]][1][lang] + " — " + I[p[3]][lang], price = g.price[t], ok = true;
+  pk.xs.forEach(function(x){ var xt = tierOf(x); if (xt < 0) { ok = false; return; } price += g.extra[xt]; name += " + " + I[x][lang] + " " + UI[lang].extraWord; });
+  pk.cs.forEach(function(c){
+    var cc = COMP.filter(function(z){ return z[0] === c; })[0];
+    if (!cc) { ok = false; return; } price += COMP_PRICE; name += " + " + cc[1][lang];
+  });
+  return ok ? {name:name, price:price, base:pk.base, g:g, item:p[3], xs:pk.xs, cs:pk.cs} : null;
 }
 function cartLines(){
   var out = [];
-  Object.keys(cart).forEach(function(k){ var i = lineInfo(k); if (i) out.push({k:k, q:cart[k], name:i.name, price:i.price}); else delete cart[k]; });
+  Object.keys(cart).forEach(function(k){ var i = lineInfo(k); if (i) out.push({k:k, q:cart[k], name:i.name, price:i.price, drink:!!i.drink}); else delete cart[k]; });
   return out;
 }
 function cartTotals(){ var n = 0, t = 0; cartLines().forEach(function(l){ n += l.q; t += l.q * l.price; }); return {n:n, t:t}; }
@@ -407,7 +437,8 @@ function updateCart(){
   var u = UI[lang], t = cartTotals();
   el("cartFab").textContent = "🛒 " + u.cart + (t.n ? " (" + t.n + ") · $" + t.t : "");
   document.querySelectorAll(".add").forEach(function(b){
-    var q = cart[keyOf(b)] || 0, s = b.parentNode.querySelector(".q");
+    var base = keyOf(b), q = 0, s = b.parentNode.querySelector(".q");
+    Object.keys(cart).forEach(function(k){ if (k.split("#")[0] === base) q += cart[k]; });
     s.textContent = q ? "×" + q : ""; s.hidden = !q;
   });
   if (sheetOpen) renderSheet();
@@ -421,7 +452,21 @@ function waCartLink(){
 }
 function renderSheet(){
   var u = UI[lang], lines = cartLines(), t = cartTotals(), h = "";
-  if (waiterMode) {
+  if (editK) {
+    var info = lineInfo(editK), g = info.g, mods = encodeMods(editX, editC), unit = lineInfo(info.base + mods).price;
+    var chip = function(act, v, on, label){ return '<button type="button" class="pk' + (on ? ' on' : '') + '" data-act="' + act + '" data-v="' + v + '" aria-pressed="' + on + '">' + label + '</button>'; };
+    h = '<div class="sh-head"><h3 id="cartTitle">' + u.custom + '</h3><button type="button" class="x" data-act="cancel" aria-label="' + u.close + '">✕</button></div>' +
+      '<p class="cn">' + esc(lineInfo(info.base).name) + (cart[editK] > 1 ? '<small>' + u.onePiece + '</small>' : '') + '</p>' +
+      '<h4 class="eh">' + u.extraG + '</h4>' +
+      SECS.map(function(s, si){
+        return '<div class="chips"><span class="sec">' + s.n[lang] + ' · +$' + g.extra[si] + '</span>' +
+          s.items.map(function(k){ return chip("tx", k, editX.indexOf(k) >= 0, I[k][lang]); }).join("") + '</div>';
+      }).join("") +
+      '<h4 class="eh">' + u.comps + '</h4><div class="chips">' +
+      COMP.map(function(c){ return chip("tc", c[0], editC.indexOf(c[0]) >= 0, c[1][lang]); }).join("") + '</div>' +
+      '<div class="tot"><span>' + u.unitP + '</span><span>$' + unit + '</span></div>' +
+      '<div class="acts"><button type="button" class="pill wa" data-act="save">' + u.save + '</button><button type="button" class="pill" data-act="cancel">' + u.cancel + '</button></div>';
+  } else if (waiterMode) {
     h = '<div class="sh-head"><h3 id="cartTitle">' + u.showW + '</h3><button type="button" class="x" data-act="close" aria-label="' + u.close + '">✕</button></div><ul class="wl">' +
       lines.map(function(l){ return '<li><b>' + l.q + '×</b>' + esc(l.name) + '</li>'; }).join("") + '</ul>' +
       (cwho ? '<p class="wnote">' + u.tableL + ': ' + esc(cwho) + '</p>' : '') + (cnote ? '<p class="wnote">' + u.notesL + ': ' + esc(cnote) + '</p>' : '') +
@@ -433,7 +478,8 @@ function renderSheet(){
       lines.map(function(l){
         return '<div class="cl"><div class="cn">' + esc(l.name) + '<small>$' + l.price + ' ' + u.each + '</small></div>' +
           '<div class="cq"><button type="button" data-act="dec" data-k="' + esc(l.k) + '" aria-label="−">−</button><b>' + l.q + '</b><button type="button" data-act="inc" data-k="' + esc(l.k) + '" aria-label="+">+</button></div>' +
-          '<div class="ct">$' + (l.q * l.price) + '</div></div>';
+          '<div class="ct">$' + (l.q * l.price) + '</div>' +
+          (l.drink ? '' : '<button type="button" class="pill cust" data-act="cust" data-k="' + esc(l.k) + '">✎ ' + u.custom + '</button>') + '</div>';
       }).join("") +
       '<div class="tot"><span>' + u.total + '</span><span>$' + t.t + '</span></div><p class="note">' + u.ivaN + '</p>' +
       '<label class="fld">' + u.who + '<input id="cwho" type="text" maxlength="60" value="' + esc(cwho) + '"></label>' +
@@ -444,7 +490,7 @@ function renderSheet(){
   }
   el("cartBody").innerHTML = h;
 }
-function openSheet(){ sheetOpen = true; waiterMode = false; el("sheet").hidden = false; document.body.style.overflow = "hidden"; renderSheet(); }
+function openSheet(){ sheetOpen = true; waiterMode = false; editK = null; el("sheet").hidden = false; document.body.style.overflow = "hidden"; renderSheet(); }
 function closeSheet(){ sheetOpen = false; el("sheet").hidden = true; document.body.style.overflow = ""; }
 el("cartFab").addEventListener("click", openSheet);
 el("sheet").addEventListener("click", function(e){
@@ -454,6 +500,22 @@ el("sheet").addEventListener("click", function(e){
   else if (a === "inc") change(b.getAttribute("data-k"), 1);
   else if (a === "dec") change(b.getAttribute("data-k"), -1);
   else if (a === "clear") { cart = {}; cnote = ""; cwho = ""; saveCart(); updateCart(); }
+  else if (a === "cust") { var ci = lineInfo(b.getAttribute("data-k")); if (ci) { editK = b.getAttribute("data-k"); editX = ci.xs.slice(); editC = ci.cs.slice(); renderSheet(); } }
+  else if (a === "tx" || a === "tc") {
+    var arr = a === "tx" ? editX : editC, v = b.getAttribute("data-v"), ix = arr.indexOf(v);
+    if (ix >= 0) arr.splice(ix, 1); else arr.push(v);
+    renderSheet();
+  }
+  else if (a === "cancel") { editK = null; renderSheet(); }
+  else if (a === "save") {
+    var nk = lineInfo(editK).base + encodeMods(editX, editC);
+    if (nk !== editK) {
+      cart[editK] = (cart[editK] || 1) - 1; if (cart[editK] <= 0) delete cart[editK];
+      cart[nk] = Math.min((cart[nk] || 0) + 1, 50);
+      saveCart();
+    }
+    editK = null; updateCart();
+  }
   else if (a === "waiter") { waiterMode = true; renderSheet(); }
   else if (a === "back") { waiterMode = false; renderSheet(); }
   else if (a === "send") window.open(waCartLink(), "_blank", "noopener");
