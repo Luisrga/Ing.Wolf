@@ -51,7 +51,7 @@ section{padding:34px 0 6px}
 .photo{margin:0}
 .photo img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border:3px solid var(--ink);border-radius:14px;box-shadow:4px 4px 0 var(--ink)}
 .photo figcaption{margin-top:6px;text-align:center;font-weight:700;font-size:.95rem}
-.minor{margin-top:22px}
+.minor{margin-top:10px;grid-column:1/-1;max-width:560px}
 .pic{width:100%;border:4px solid var(--ink);border-radius:22px;box-shadow:5px 5px 0 var(--ink);display:block;animation:bob 4s ease-in-out infinite}
 .desc{color:var(--ink);font-weight:700;font-size:1.05rem;line-height:1.5;margin-top:12px}
 .desc b{color:var(--ink)}
@@ -236,10 +236,6 @@ function render(){
       '<img class="pic" src="' + g.img + '" alt="' + g.name[lang] + '">' +
       g.desc[lang].map(function(t){ return '<p class="desc">' + t + '</p>'; }).join("") +
       '<div class="photos">' + g.photos.map(function(p){ return '<figure class="photo"><img src="' + p[0] + '" alt="' + p[1][lang] + '" loading="lazy"><figcaption>' + p[1][lang] + '</figcaption></figure>'; }).join("") + '</div>';
-    if (gi === 1) {
-      h += '<div class="minor" id="bebidas"><h3 class="mh">' + u.drinks + '</h3><div class="drinks"><img class="pic" src="img/bebidas.jpg" alt="' + u.drinks + '" loading="lazy">' +
-        '<div><div class="dl">' + DRINKS.map(function(d){ return '<div class="row"><span>' + d.n[lang] + '</span><b>$' + d.p + '</b></div>'; }).join("") + '</div><p class="note">' + u.vary + '</p></div></div></div>';
-    }
     h += '</div><div><div class="grid">';
     SECS.forEach(function(s, i){
       h += '<div class="tier k-' + s.k + '"><div class="items"><div class="sec">' + s.n[lang] + '</div>' +
@@ -247,7 +243,12 @@ function render(){
         '</div><div class="extra"><span>' + u.guisado + '</span><span>+$' + g.extra[i] + '</span></div></div>';
     });
     h += '</div><div class="addons"><span>' + u.comp + ':</span>' +
-      COMP.map(function(c){ return '<span class="chip">' + c[1][lang] + ' +$8</span>'; }).join("") + '</div></div></div>';
+      COMP.map(function(c){ return '<span class="chip">' + c[1][lang] + ' +$8</span>'; }).join("") + '</div></div>';
+    if (gi === 1) {
+      h += '<div class="minor" id="bebidas"><h3 class="mh">' + u.drinks + '</h3><div class="drinks"><img class="pic" src="img/bebidas.jpg" alt="' + u.drinks + '" loading="lazy">' +
+        '<div><div class="dl">' + DRINKS.map(function(d){ return '<div class="row"><span>' + d.n[lang] + '</span><b>$' + d.p + '</b></div>'; }).join("") + '</div><p class="note">' + u.vary + '</p></div></div></div>';
+    }
+    h += '</div>';
   });
   h += '</section>';
 
