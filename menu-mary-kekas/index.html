@@ -32,6 +32,7 @@ h1{font-family:"Kaushan Script","Brush Script MT",cursive;font-size:clamp(3rem,1
 .wa{background:#25D366}
 .fab{position:fixed;right:16px;bottom:16px;z-index:30;min-height:52px;padding:0 20px;border:3px solid var(--ink);border-radius:999px;background:#25D366;color:var(--ink);font:700 1rem "DM Sans";text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:4px 4px 0 var(--ink)}
 .fab:hover{transform:translate(-1px,-1px)}
+.fab{cursor:pointer}
 
 nav{position:sticky;top:0;z-index:20;background:var(--cream);border-bottom:3px solid var(--ink)}
 nav .wrap{display:flex;gap:8px;overflow-x:auto;padding:10px 16px;scrollbar-width:none}
@@ -52,6 +53,43 @@ section{padding:34px 0 6px}
 .photo img{width:100%;height:auto;display:block;border:3px solid var(--ink);border-radius:14px;box-shadow:4px 4px 0 var(--ink)}
 .photo figcaption{margin-top:6px;text-align:center;font-weight:700;font-size:.95rem}
 .minor{margin-top:10px;grid-column:1/-1;max-width:560px}
+.photo .desc{margin-top:8px}
+.photos{gap:18px}
+.pick{position:sticky;top:67px;z-index:6;display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--cream);border:3px solid var(--ink);border-radius:14px;padding:8px 12px;margin-bottom:14px;font-weight:700;box-shadow:3px 3px 0 var(--ink)}
+.pk{min-height:40px;padding:0 16px;border:2px solid var(--ink);border-radius:999px;background:var(--card);color:var(--ink);font:700 .95rem "DM Sans";cursor:pointer}
+.pk.on{background:var(--ink);color:var(--cream)}
+.rt{display:flex;align-items:center;gap:8px}
+.row{padding:5px 0}
+.q{font-weight:700;font-size:.85rem;background:var(--mustard);border:2px solid var(--ink);border-radius:999px;padding:0 8px}
+.add{width:38px;height:38px;flex:none;border-radius:50%;border:3px solid var(--ink);background:var(--mustard);color:var(--ink);font:700 1.3rem/1 "DM Sans";cursor:pointer;box-shadow:2px 2px 0 var(--ink);transition:transform .12s}
+.add:active{transform:scale(.88)}
+.fab.bump{animation:bump .35s}
+@keyframes bump{50%{transform:scale(1.12)}}
+.sheet{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.sheet-back{position:absolute;inset:0;background:rgba(20,10,8,.55)}
+.sheet-box{position:relative;width:100%;max-width:560px;max-height:92vh;overflow:auto;background:var(--cream);border:3px solid var(--ink);border-radius:22px 22px 0 0;padding:18px 18px 24px;box-shadow:0 -6px 0 var(--mustard)}
+@media(min-width:600px){.sheet{align-items:center}.sheet-box{border-radius:22px;box-shadow:6px 6px 0 var(--ink)}}
+.sh-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.sh-head h3{font-size:1.5rem}
+.x{width:44px;height:44px;border-radius:50%;border:3px solid var(--ink);background:var(--card);font:700 1.1rem "DM Sans";cursor:pointer}
+.empty{font-weight:700;padding:14px 0}
+.cl{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed rgba(47,26,23,.35)}
+.cn{font-weight:700}.cn small{display:block;font-weight:500;color:var(--muted)}
+.cq{display:flex;align-items:center;gap:8px}
+.cq button{width:38px;height:38px;border-radius:50%;border:3px solid var(--ink);background:var(--card);font:700 1.2rem/1 "DM Sans";cursor:pointer}
+.cq b{min-width:22px;text-align:center}
+.ct{font-family:"Bowlby One";min-width:52px;text-align:right}
+.tot{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0 6px;font-family:"Bowlby One";font-size:1.4rem}
+.fld{display:block;margin-top:10px;font-weight:700;font-size:.9rem}
+.fld input,.fld textarea{display:block;width:100%;margin-top:4px;min-height:44px;padding:8px 12px;border:3px solid var(--ink);border-radius:12px;background:var(--card);color:var(--ink);font:500 1rem "DM Sans"}
+.acts{display:grid;gap:10px;margin-top:16px}
+.acts .pill{justify-content:center;width:100%}
+.acts .lnk{background:none;border:0;box-shadow:none;text-decoration:underline;min-height:40px}
+.wl{list-style:none;padding:0;margin:8px 0}
+.wl li{font-size:1.5rem;font-weight:700;padding:10px 0;border-bottom:2px solid var(--ink);line-height:1.25}
+.wl li b{font-family:"Bowlby One";font-weight:400;margin-right:8px}
+.wnote{font-size:1.2rem;font-weight:700;margin-top:12px}
 .pic{width:100%;border:4px solid var(--ink);border-radius:22px;box-shadow:5px 5px 0 var(--ink);display:block;animation:bob 4s ease-in-out infinite}
 .desc{color:var(--ink);font-weight:700;font-size:1.05rem;line-height:1.5;margin-top:12px}
 .desc b{color:var(--ink)}
@@ -131,7 +169,11 @@ footer a{color:var(--ink);font-weight:700}
     <p class="note" data-i="demo">Menú digital de demostración creado por <a href="../">Ing. Wolf</a>.</p>
   </div>
 </footer>
-<a class="fab" id="waFab" href="#" target="_blank" rel="noopener" data-i="order">Pedir por WhatsApp</a>
+<button type="button" class="fab" id="cartFab"></button>
+<div id="sheet" class="sheet" hidden>
+  <div class="sheet-back" data-act="close"></div>
+  <div class="sheet-box" role="dialog" aria-modal="true" aria-labelledby="cartTitle"><div id="cartBody"></div></div>
+</div>
 
 <script>
 // ===== Datos (edita aquí precios, horarios y contacto) =====
@@ -196,7 +238,11 @@ var UI = {
       dTitle:"Pídelas por Uber Eats o Rappi",dDesc:"¿Tu oficina queda lejos? ¡No pasa nada! Pide tus kekas a domicilio.",
       addr:"Dirección",addrV:"Av. Comalcalco, entre Calle 22 y Calle 24, Supermanzana 95, Cancún, Q.R.",maps:"Ver en Google Maps",
       phone:"Teléfono",hours:"Horario",hoursV:"9:00 AM a 4:00 PM",hoursN:"Servicio en mesa hasta las 3:30 PM. Después, solo pedidos para llevar.",
-      revT:"¿Te gustaron tus kekas?",revD:"Regálanos 5 estrellas en Google Maps. ¡Nos ayuda muchísimo!",revB:"Calificar ★★★★★"},
+      revT:"¿Te gustaron tus kekas?",revD:"Regálanos 5 estrellas en Google Maps. ¡Nos ayuda muchísimo!",revB:"Calificar ★★★★★",
+      pick:"Elige y agrega",add:"Agregar",cart:"Mi pedido",cartEmpty:"Aún no has agregado nada. Elige el platillo arriba y toca + junto al guisado.",
+      total:"Total",who:"Mesa o nombre (opcional)",notes:"Notas (opcional)",notesPh:"Ej. sin crema, guisado extra…",
+      send:"Enviar por WhatsApp",waiter:"Mostrar al mesero",back:"Volver",clear:"Vaciar pedido",close:"Cerrar",
+      showW:"Muestra esta pantalla al mesero",each:"c/u",hello:"Hola Mary Kekas, quiero hacer un pedido 🌮",tableL:"Mesa/Nombre",notesL:"Notas",rm:"Quitar",ivaN:"Precios con IVA incluido."},
   en:{order:"Order on WhatsApp",tagline:"Handcrafted street food made with traditional recipes",
       guisado:"Extra filling",comp:"Extra toppings",promos:"Specials",drinks:"Drinks",deliv:"Delivery",visit:"Visit us",
       iva:"All our prices include VAT.",demo:'Demo digital menu created by <a href="../">Ing. Wolf</a>.',
@@ -204,7 +250,11 @@ var UI = {
       dTitle:"Order on Uber Eats or Rappi",dDesc:"Office too far? No problem! Get your kekas delivered.",
       addr:"Address",addrV:"Av. Comalcalco, between Calle 22 and Calle 24, Supermanzana 95, Cancún, Q.R.",maps:"Open in Google Maps",
       phone:"Phone",hours:"Hours",hoursV:"9:00 AM to 4:00 PM",hoursN:"Table service until 3:30 PM. After that, takeout orders only.",
-      revT:"Did you enjoy your kekas?",revD:"Give us 5 stars on Google Maps. It helps us a lot!",revB:"Rate us ★★★★★"}
+      revT:"Did you enjoy your kekas?",revD:"Give us 5 stars on Google Maps. It helps us a lot!",revB:"Rate us ★★★★★",
+      pick:"Choose and add",add:"Add",cart:"My order",cartEmpty:"Nothing added yet. Pick the dish above and tap + next to the filling.",
+      total:"Total",who:"Table or name (optional)",notes:"Notes (optional)",notesPh:"E.g. no cream, extra filling…",
+      send:"Send on WhatsApp",waiter:"Show to the waiter",back:"Back",clear:"Clear order",close:"Close",
+      showW:"Show this screen to the waiter",each:"each",hello:"Hi Mary Kekas, I'd like to place an order 🌮",tableL:"Table/Name",notesL:"Notes",rm:"Remove",ivaN:"Prices include VAT."}
 };
 
 var cur = 0;
@@ -218,7 +268,7 @@ function render(){
   document.documentElement.lang = lang;
   el("langBtn").textContent = lang === "es" ? "EN" : "ES";
   el("rateTop").href = REVIEW; el("rateTop").textContent = lang === "es" ? "★ Calificar" : "★ Rate us";
-  el("waTop").href = waLink(); el("waFab").href = waLink();
+  el("waTop").href = waLink();
   document.querySelectorAll("[data-i]").forEach(function(n){ n.innerHTML = u[n.getAttribute("data-i")]; });
 
   var nav = '<a href="#promos" data-k="promos">' + u.promos + '</a>';
@@ -234,19 +284,19 @@ function render(){
   GROUPS.forEach(function(g, gi){
     h += '<div class="page" id="pg' + gi + '" role="tabpanel"' + (cur === gi ? '' : ' hidden') + '><div>' +
       '<img class="pic" src="' + g.img + '" alt="' + g.name[lang] + '">' +
-      '<div class="photos">' + g.photos.map(function(p){ return '<figure class="photo"><img src="' + p[0] + '" alt="' + p[1][lang] + '" loading="lazy"><figcaption>' + p[1][lang] + '</figcaption></figure>'; }).join("") + '</div>' +
-      g.desc[lang].map(function(t){ return '<p class="desc">' + t + '</p>'; }).join("");
-    h += '</div><div><div class="grid">';
+      '<div class="photos">' + g.photos.map(function(p, pi){ return '<figure class="photo"><img src="' + p[0] + '" alt="' + p[1][lang] + '" loading="lazy"><p class="desc">' + g.desc[lang][pi] + '</p></figure>'; }).join("") + '</div>';
+    h += '</div><div><div class="pick"><span>' + u.pick + ':</span>' +
+      g.photos.map(function(p, pi){ return '<button type="button" class="pk' + (selP[gi] === pi ? ' on' : '') + '" data-g="' + gi + '" data-p="' + pi + '">' + p[1][lang] + '</button>'; }).join("") + '</div><div class="grid">';
     SECS.forEach(function(s, i){
       h += '<div class="tier k-' + s.k + '"><div class="items"><div class="sec">' + s.n[lang] + '</div>' +
-        s.items.map(function(k){ return '<div class="row"><span>' + I[k][lang] + '</span><b>$' + g.price[i] + '</b></div>'; }).join("") +
+        s.items.map(function(k){ return '<div class="row"><span>' + I[k][lang] + '</span><span class="rt"><b>$' + g.price[i] + '</b><span class="q" hidden></span><button type="button" class="add" data-g="' + gi + '" data-it="' + k + '" aria-label="' + u.add + ': ' + I[k][lang] + '">+</button></span></div>'; }).join("") +
         '</div><div class="extra"><span>' + u.guisado + '</span><span>+$' + g.extra[i] + '</span></div></div>';
     });
     h += '</div><div class="addons"><span>' + u.comp + ':</span>' +
       COMP.map(function(c){ return '<span class="chip">' + c[1][lang] + ' +$8</span>'; }).join("") + '</div></div>';
     if (gi === 1) {
       h += '<div class="minor" id="bebidas"><h3 class="mh">' + u.drinks + '</h3><div class="drinks"><img class="pic" src="img/bebidas.jpg" alt="' + u.drinks + '" loading="lazy">' +
-        '<div><div class="dl">' + DRINKS.map(function(d){ return '<div class="row"><span>' + d.n[lang] + '</span><b>$' + d.p + '</b></div>'; }).join("") + '</div><p class="note">' + u.vary + '</p></div></div></div>';
+        '<div><div class="dl">' + DRINKS.map(function(d, di){ return '<div class="row"><span>' + d.n[lang] + '</span><span class="rt"><b>$' + d.p + '</b><span class="q" hidden></span><button type="button" class="add" data-d="' + di + '" aria-label="' + u.add + ': ' + d.n[lang] + '">+</button></span></div>'; }).join("") + '</div><p class="note">' + u.vary + '</p></div></div></div>';
     }
     h += '</div>';
   });
@@ -264,6 +314,7 @@ function render(){
 
   el("menu").innerHTML = h;
   watch();
+  updateCart();
 }
 
 var io = ("IntersectionObserver" in window) ? new IntersectionObserver(function(es){
@@ -323,6 +374,105 @@ window.addEventListener("scroll", function(){
   if (ticking) return; ticking = true;
   requestAnimationFrame(function(){ ticking = false; track(); });
 }, {passive:true});
+
+// ===== Carrito / pedido =====
+var cart = {}, cnote = "", cwho = "", selP = [0, 0, 0], sheetOpen = false, waiterMode = false;
+try { var sv = JSON.parse(localStorage.getItem("mk-cart") || "null"); if (sv) { cart = sv.c || {}; cnote = sv.n || ""; cwho = sv.w || ""; } } catch(e){}
+function saveCart(){ try { localStorage.setItem("mk-cart", JSON.stringify({c:cart, n:cnote, w:cwho})); } catch(e){} }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function lineInfo(key){
+  var p = key.split("|");
+  if (p[0] === "d") { var d = DRINKS[+p[1]]; return d ? {name:d.n[lang], price:d.p} : null; }
+  var g = GROUPS[+p[1]]; if (!g || !g.photos[+p[2]] || !I[p[3]]) return null;
+  for (var i = 0; i < SECS.length; i++) if (SECS[i].items.indexOf(p[3]) >= 0) return {name:g.photos[+p[2]][1][lang] + " — " + I[p[3]][lang], price:g.price[i]};
+  return null;
+}
+function cartLines(){
+  var out = [];
+  Object.keys(cart).forEach(function(k){ var i = lineInfo(k); if (i) out.push({k:k, q:cart[k], name:i.name, price:i.price}); else delete cart[k]; });
+  return out;
+}
+function cartTotals(){ var n = 0, t = 0; cartLines().forEach(function(l){ n += l.q; t += l.q * l.price; }); return {n:n, t:t}; }
+function keyOf(b){
+  if (b.getAttribute("data-d") !== null) return "d|" + b.getAttribute("data-d");
+  var g = +b.getAttribute("data-g"); return "g|" + g + "|" + selP[g] + "|" + b.getAttribute("data-it");
+}
+function change(key, d){
+  var q = (cart[key] || 0) + d;
+  if (q <= 0) delete cart[key]; else cart[key] = Math.min(q, 50);
+  saveCart(); updateCart();
+  if (d > 0) { var f = el("cartFab"); f.classList.remove("bump"); void f.offsetWidth; f.classList.add("bump"); }
+}
+function updateCart(){
+  var u = UI[lang], t = cartTotals();
+  el("cartFab").textContent = "🛒 " + u.cart + (t.n ? " (" + t.n + ") · $" + t.t : "");
+  document.querySelectorAll(".add").forEach(function(b){
+    var q = cart[keyOf(b)] || 0, s = b.parentNode.querySelector(".q");
+    s.textContent = q ? "×" + q : ""; s.hidden = !q;
+  });
+  if (sheetOpen) renderSheet();
+}
+function waCartLink(){
+  var u = UI[lang], lines = cartLines(), t = cartTotals();
+  var m = u.hello + "\n\n" + lines.map(function(l){ return "• " + l.q + " × " + l.name + " — $" + (l.q * l.price); }).join("\n") + "\n\n" + u.total + ": $" + t.t;
+  if (cwho) m += "\n" + u.tableL + ": " + cwho;
+  if (cnote) m += "\n" + u.notesL + ": " + cnote;
+  return "https://wa.me/" + WA_NUM + "?text=" + encodeURIComponent(m);
+}
+function renderSheet(){
+  var u = UI[lang], lines = cartLines(), t = cartTotals(), h = "";
+  if (waiterMode) {
+    h = '<div class="sh-head"><h3 id="cartTitle">' + u.showW + '</h3><button type="button" class="x" data-act="close" aria-label="' + u.close + '">✕</button></div><ul class="wl">' +
+      lines.map(function(l){ return '<li><b>' + l.q + '×</b>' + esc(l.name) + '</li>'; }).join("") + '</ul>' +
+      (cwho ? '<p class="wnote">' + u.tableL + ': ' + esc(cwho) + '</p>' : '') + (cnote ? '<p class="wnote">' + u.notesL + ': ' + esc(cnote) + '</p>' : '') +
+      '<div class="tot"><span>' + u.total + '</span><span>$' + t.t + '</span></div><div class="acts"><button type="button" class="pill" data-act="back">← ' + u.back + '</button></div>';
+  } else if (!lines.length) {
+    h = '<div class="sh-head"><h3 id="cartTitle">' + u.cart + '</h3><button type="button" class="x" data-act="close" aria-label="' + u.close + '">✕</button></div><p class="empty">' + u.cartEmpty + '</p>';
+  } else {
+    h = '<div class="sh-head"><h3 id="cartTitle">' + u.cart + '</h3><button type="button" class="x" data-act="close" aria-label="' + u.close + '">✕</button></div>' +
+      lines.map(function(l){
+        return '<div class="cl"><div class="cn">' + esc(l.name) + '<small>$' + l.price + ' ' + u.each + '</small></div>' +
+          '<div class="cq"><button type="button" data-act="dec" data-k="' + esc(l.k) + '" aria-label="−">−</button><b>' + l.q + '</b><button type="button" data-act="inc" data-k="' + esc(l.k) + '" aria-label="+">+</button></div>' +
+          '<div class="ct">$' + (l.q * l.price) + '</div></div>';
+      }).join("") +
+      '<div class="tot"><span>' + u.total + '</span><span>$' + t.t + '</span></div><p class="note">' + u.ivaN + '</p>' +
+      '<label class="fld">' + u.who + '<input id="cwho" type="text" maxlength="60" value="' + esc(cwho) + '"></label>' +
+      '<label class="fld">' + u.notes + '<textarea id="cnote" rows="2" maxlength="300" placeholder="' + esc(u.notesPh) + '">' + esc(cnote) + '</textarea></label>' +
+      '<div class="acts"><button type="button" class="pill wa" data-act="send">' + u.send + '</button>' +
+      '<button type="button" class="pill" data-act="waiter">' + u.waiter + '</button>' +
+      '<button type="button" class="pill lnk" data-act="clear">' + u.clear + '</button></div>';
+  }
+  el("cartBody").innerHTML = h;
+}
+function openSheet(){ sheetOpen = true; waiterMode = false; el("sheet").hidden = false; document.body.style.overflow = "hidden"; renderSheet(); }
+function closeSheet(){ sheetOpen = false; el("sheet").hidden = true; document.body.style.overflow = ""; }
+el("cartFab").addEventListener("click", openSheet);
+el("sheet").addEventListener("click", function(e){
+  var b = e.target.closest("[data-act]"); if (!b) return;
+  var a = b.getAttribute("data-act");
+  if (a === "close") closeSheet();
+  else if (a === "inc") change(b.getAttribute("data-k"), 1);
+  else if (a === "dec") change(b.getAttribute("data-k"), -1);
+  else if (a === "clear") { cart = {}; cnote = ""; cwho = ""; saveCart(); updateCart(); }
+  else if (a === "waiter") { waiterMode = true; renderSheet(); }
+  else if (a === "back") { waiterMode = false; renderSheet(); }
+  else if (a === "send") window.open(waCartLink(), "_blank", "noopener");
+});
+el("sheet").addEventListener("input", function(e){
+  if (e.target.id === "cwho") cwho = e.target.value; else if (e.target.id === "cnote") cnote = e.target.value; else return;
+  saveCart();
+});
+document.addEventListener("keydown", function(e){ if (e.key === "Escape" && sheetOpen) closeSheet(); });
+el("menu").addEventListener("click", function(e){
+  var b = e.target.closest(".add");
+  if (b) { change(keyOf(b), 1); return; }
+  var p = e.target.closest(".pk");
+  if (p) {
+    var g = +p.getAttribute("data-g"); selP[g] = +p.getAttribute("data-p");
+    p.parentNode.querySelectorAll(".pk").forEach(function(x){ x.classList.toggle("on", x === p); });
+    updateCart();
+  }
+});
 
 el("langBtn").addEventListener("click", function(){
   lang = lang === "es" ? "en" : "es";
