@@ -23,8 +23,15 @@ h1,h2,h3,.disp{font-family:"Bowlby One","Arial Black",sans-serif;font-weight:400
 
 /* Encabezado */
 header{text-align:center;padding:36px 0 22px}
-.logo{display:inline-grid;place-items:center;width:128px;height:128px;border-radius:50%;background:var(--check);border:4px solid var(--ink);box-shadow:6px 6px 0 var(--ink);margin-bottom:16px;animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
-.logo span{background:var(--card);border:3px solid var(--ink);border-radius:999px;padding:8px 14px;font-family:"Bowlby One";font-size:1.15rem;line-height:1;transform:rotate(-6deg)}
+.logo{display:block;margin:0 auto 16px;width:150px;height:150px;border-radius:50%;border:4px solid var(--ink);box-shadow:6px 6px 0 var(--ink);object-fit:cover;animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
+.art{margin-left:auto;width:176px;margin-top:-18px;flex:none;animation:bob 3.2s ease-in-out infinite}
+.art svg{width:100%;height:auto;display:block;filter:drop-shadow(3px 3px 0 rgba(47,26,23,.9))}
+.wa{background:#25D366}
+.fab{position:fixed;right:16px;bottom:16px;z-index:30;min-height:52px;padding:0 20px;border:3px solid var(--ink);border-radius:999px;background:#25D366;color:var(--ink);font:700 1rem "DM Sans";text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:4px 4px 0 var(--ink)}
+.fab:hover{transform:translate(-1px,-1px)}
+.drink svg{width:110px;height:auto;margin:0 auto 6px;display:block;animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-6px) rotate(1.5deg)}}
+@media(max-width:520px){.art{width:110px;margin-top:0}}
 h1{font-size:clamp(2.2rem,8vw,3.6rem);line-height:1;text-shadow:3px 3px 0 var(--mustard)}
 .tag{margin:10px auto 0;max-width:34ch;color:var(--muted);font-weight:500}
 .bar{display:flex;justify-content:center;gap:10px;margin-top:16px;flex-wrap:wrap}
@@ -91,12 +98,13 @@ footer a{color:var(--ink);font-weight:700}
 <body>
 <header>
   <div class="wrap">
-    <div class="logo" aria-hidden="true"><span>Mary Kekas</span></div>
+    <img class="logo" src="logo.webp" alt="Mary Kekas" width="150" height="150">
     <h1>Mary Kekas</h1>
     <p class="tag" data-i="tagline">Antojitos artesanales hechos con recetas tradicionales</p>
     <div class="bar">
       <button class="pill" id="langBtn" type="button" aria-label="Cambiar idioma / Change language">EN</button>
       <a class="pill" href="https://www.instagram.com/marykekascancun/" target="_blank" rel="noopener">Instagram</a>
+      <a class="pill wa" id="waTop" href="#" target="_blank" rel="noopener" data-i="order">Pedir por WhatsApp</a>
     </div>
   </div>
 </header>
@@ -109,8 +117,28 @@ footer a{color:var(--ink);font-weight:700}
   </div>
 </footer>
 
+<a class="fab" id="waFab" href="#" target="_blank" rel="noopener" data-i="order">Pedir por WhatsApp</a>
 <script>
+// ===== Ilustraciones (estilo caricatura, trazo café) =====
+var S = 'stroke="#2F1A17" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
+function sv(inner){ return '<svg viewBox="0 0 160 110" aria-hidden="true">' + inner + '</svg>'; }
+var ART = {
+  tostadas: sv('<ellipse cx="80" cy="66" rx="64" ry="30" fill="#E8B96A" '+S+'/><ellipse cx="80" cy="60" rx="52" ry="22" fill="#6B3B2A" '+S+'/><path d="M34 58q10-18 22-6t24-8 24 6 20-4q-8 24-46 24T34 58z" fill="#7BBF6A" '+S+'/><circle cx="64" cy="52" r="9" fill="#D9473C" '+S+'/><path d="M92 50q12-8 22 2-6 12-20 8z" fill="#B8D36B" '+S+'/><circle cx="82" cy="44" r="5" fill="#fff" '+S+'/>'),
+  quesarinas: sv('<path d="M14 78Q16 22 80 22t66 56z" fill="#F7E7C4" '+S+'/><path d="M14 78h132" '+S+' fill="none"/><path d="M26 78q10 16 20 4t18 14 18-12 20 10 18-14 12 8v-10z" fill="#F4C84B" '+S+'/><path d="M44 50q36-22 72 0" fill="none" '+S+' stroke-dasharray="6 7"/>'),
+  huaraches: sv('<ellipse cx="80" cy="62" rx="72" ry="30" fill="#E8B96A" '+S+'/><path d="M26 60q14-14 28-2t26-6 26 4 26-6q-6 22-56 22t-50-12z" fill="#7BBF6A" '+S+'/><circle cx="58" cy="58" r="6" fill="#D9473C" '+S+'/><circle cx="100" cy="56" r="6" fill="#D9473C" '+S+'/><path d="M40 70q40 12 80 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><circle cx="80" cy="54" r="5" fill="#fff" '+S+'/>'),
+  pambazos: sv('<path d="M14 66Q14 22 80 22t66 44q0 26-66 26T14 66z" fill="#C8432F" '+S+'/><path d="M18 62q62 18 124 0" fill="none" '+S+'/><path d="M26 64q10-10 20-2t20-4 22 4 22-4 20 4q-4 12-64 12t-60-10z" fill="#7BBF6A" '+S+'/><path d="M44 78q36 8 72 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><ellipse cx="52" cy="40" rx="5" ry="3" fill="#F7C6AE" transform="rotate(-20 52 40)"/><ellipse cx="92" cy="34" rx="5" ry="3" fill="#F7C6AE" transform="rotate(10 92 34)"/>'),
+  quesadillas: sv('<path d="M12 80Q16 20 80 20t68 60z" fill="#E8B96A" '+S+'/><path d="M12 80h136" fill="none" '+S+'/><path d="M30 80q8 18 18 4t16 16 20-14 18 12 16-12 10 6v-12z" fill="#F4C84B" '+S+'/><path d="M40 44l14 14M58 36l14 14M76 32l14 14M94 36l14 14" fill="none" stroke="#6B3B2A" stroke-width="4" stroke-linecap="round"/>'),
+  sopes: sv('<ellipse cx="80" cy="64" rx="60" ry="28" fill="#E8B96A" '+S+'/><ellipse cx="80" cy="56" rx="46" ry="20" fill="#F0CE86" '+S+'/><ellipse cx="80" cy="54" rx="38" ry="14" fill="#6B3B2A" '+S+'/><path d="M46 52q10-10 22-2t22-4 22 4q-6 14-34 14t-32-12z" fill="#7BBF6A" '+S+'/><path d="M56 56q24 8 48 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><circle cx="80" cy="50" r="5" fill="#fff" '+S+'/>'),
+  promos: sv('<path d="M30 38h100l-10 56q-2 8-12 8H52q-10 0-12-8z" fill="#C8432F" '+S+'/><ellipse cx="80" cy="38" rx="50" ry="10" fill="#E8B96A" '+S+'/><path d="M58 28q-8-14 4-20M80 26q-8-14 4-22M102 28q-8-14 4-20" fill="none" '+S+' stroke-width="4"/>')
+};
+var DART = {
+  d1: sv('<path d="M42 30h76l-8 66q-1 8-10 8H60q-9 0-10-8z" fill="#F6A93B" '+S+'/><path d="M46 52h68" '+S+' fill="none"/><path d="M92 26l14-22 8 4" fill="none" '+S+'/><circle cx="62" cy="76" r="9" fill="#FFD36B" '+S+'/>'),
+  d2: sv('<path d="M64 14h32v14q14 8 14 26v42q0 10-10 10H60q-10 0-10-10V54q0-18 14-26z" fill="#BCD6F2" '+S+'/><rect x="62" y="6" width="36" height="12" rx="4" fill="#3E67A8" '+S+'/><path d="M56 62q24 10 48 0" fill="none" '+S+'/>'),
+  d3: sv('<path d="M68 10h24v12q18 10 18 30v44q0 10-10 10H60q-10 0-10-10V52q0-20 18-30z" fill="#C8432F" '+S+'/><rect x="66" y="4" width="28" height="10" rx="3" fill="#2F1A17" '+S+'/><rect x="56" y="48" width="48" height="32" rx="4" fill="#F7EDD3" '+S+'/><circle cx="80" cy="64" r="8" fill="#C8432F"/>')
+};
 // ===== Datos del menú (edita aquí precios y platillos) =====
+var WA_NUM = "5219981591114";
+function waLink(){ return "https://wa.me/" + WA_NUM + "?text=" + encodeURIComponent(lang === "es" ? "Hola Mary Kekas, quiero hacer un pedido 🌮" : "Hi Mary Kekas, I'd like to place an order 🌮"); }
 var I = { // nombres de guisos
   pata:{es:"Pata de res picada",en:"Chopped beef trotter"},
   asada:{es:"Carne asada",en:"Grilled steak"},
@@ -130,12 +158,12 @@ var I = { // nombres de guisos
   papach:{es:"Papa con chorizo",en:"Potato with chorizo"}
 };
 var UI = {
-  es:{tagline:"Antojitos artesanales hechos con recetas tradicionales",extra:"Ingrediente extra",extras:"Extras",
+  es:{order:"Pedir por WhatsApp",tagline:"Antojitos artesanales hechos con recetas tradicionales",extra:"Ingrediente extra",extras:"Extras",
       foot:"Precios en pesos mexicanos. Sujetos a cambio sin previo aviso.",
       demo:'Menú digital de demostración creado por <a href="../">Ing. Wolf</a>.',
       promos:"Promociones",drinks:"Bebidas",nav:"Secciones",
       queso:"Queso fresco",lechuga:"Lechuga",crema:"Crema",trad:"Tradicional"},
-  en:{tagline:"Handcrafted street food made with traditional recipes",extra:"Extra ingredient",extras:"Extras",
+  en:{order:"Order on WhatsApp",tagline:"Handcrafted street food made with traditional recipes",extra:"Extra ingredient",extras:"Extras",
       foot:"Prices in Mexican pesos. Subject to change without notice.",
       demo:'Demo digital menu created by <a href="../">Ing. Wolf</a>.',
       promos:"Specials",drinks:"Drinks",nav:"Sections",
@@ -209,6 +237,7 @@ function render(){
   var u = UI[lang];
   document.documentElement.lang = lang;
   el("langBtn").textContent = lang === "es" ? "EN" : "ES";
+  el("waTop").href = waLink(); el("waFab").href = waLink();
   document.querySelectorAll("[data-i]").forEach(function(n){ n.innerHTML = u[n.getAttribute("data-i")]; });
 
   var nav = '<a href="#promos">' + u.promos + '</a>';
@@ -216,11 +245,11 @@ function render(){
   nav += '<a href="#bebidas">' + u.drinks + '</a>';
   el("nav").innerHTML = nav;
 
-  var h = '<section id="promos"><div class="head"><h2>' + u.promos + '</h2></div><div class="promos">' +
+  var h = '<section id="promos"><div class="head"><h2>' + u.promos + '</h2><div class="art">' + ART.promos + '</div></div><div class="promos">' +
     PROMOS.map(function(p){ return '<article class="promo ' + p.c + '"><span class="day">' + p.day[lang] + '</span><h3>' + p.t[lang] + '</h3><p>' + p.d[lang] + '</p></article>'; }).join("") + '</div></section>';
 
   CATS.forEach(function(c){
-    h += '<section id="' + c.id + '"><div class="head"><h2>' + c.name[lang] + '</h2></div><p class="desc">' + c.desc[lang] + '</p><div class="grid">';
+    h += '<section id="' + c.id + '"><div class="head"><h2>' + c.name[lang] + '</h2><div class="art">' + ART[c.id] + '</div></div><p class="desc">' + c.desc[lang] + '</p><div class="grid">';
     c.tiers.forEach(function(t){
       h += '<div class="tier k-' + t.k + '"><div class="items">' +
         (t.label ? '<div class="row"><span style="font-weight:700;text-transform:uppercase;font-size:.8rem;letter-spacing:.05em">' + u[t.label] + '</span><span></span></div>' : '') +
@@ -232,7 +261,7 @@ function render(){
   });
 
   h += '<section id="bebidas"><div class="head"><h2>' + u.drinks + '</h2></div><div class="drinks">' +
-    DRINKS.map(function(d){ return '<div class="drink ' + d.c + '"><h3>' + d.n[lang] + '</h3><div class="pr">$' + d.p + '</div></div>'; }).join("") + '</div></section>';
+    DRINKS.map(function(d){ return '<div class="drink ' + d.c + '">' + DART[d.c] + '<h3>' + d.n[lang] + '</h3><div class="pr">$' + d.p + '</div></div>'; }).join("") + '</div></section>';
 
   el("menu").innerHTML = h;
   watch();
