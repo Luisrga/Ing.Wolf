@@ -94,6 +94,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:36px}
 .svc{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px}
 .svc .card{padding:0;display:flex;flex-direction:column}
 .svc .media{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,var(--glow),transparent 70%),var(--bg);border-bottom:1px solid var(--border);overflow:hidden}
+.svc .media>iframe.site{position:absolute;top:0;left:0;width:1280px;height:720px;transform-origin:0 0;pointer-events:none}
 .svc .media>svg,.svc .media>img,.svc .media>video,.svc .media>iframe{width:100%;height:100%;display:block;object-fit:cover;border:0}
 .svc .ex{position:absolute;left:10px;top:10px;z-index:2;font-size:.7rem;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--card);border:1px solid var(--border);color:var(--muted)}
 .svc .body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
@@ -286,14 +287,14 @@ var TEXT = {
       contactTitle:"Hablemos",contactText:"¿Tienes un proyecto en mente? Escríbeme.",cta:"Escríbeme por WhatsApp",
       navServices:"Servicios",navProjects:"Proyectos",servicesTitle:"Servicios",
       servicesSub:"Soluciones de tecnología para tu casa o negocio. Elige un servicio y cotiza con el asistente.",
-      example:"Ejemplo ilustrativo",quote:"Cotizar",before:"Antes",after:"Después",slide:"Desliza para comparar",
+      live:"Ejemplo real",example:"Ejemplo ilustrativo",quote:"Cotizar",before:"Antes",after:"Después",slide:"Desliza para comparar",
       linkedin:"LinkedIn",instagram:"Instagram",whatsapp:"WhatsApp",view:"Ver proyecto",
       toDark:"🌙 Oscuro",toLight:"☀️ Claro",otherLang:"English"},
   en:{tagline:"Engineering, technology and projects that solve real problems.",projects:"Projects",
       contactTitle:"Let's talk",contactText:"Have a project in mind? Message me.",cta:"Message me on WhatsApp",
       navServices:"Services",navProjects:"Projects",servicesTitle:"Services",
       servicesSub:"Technology solutions for your home or business. Pick a service and get a quote with the assistant.",
-      example:"Illustrative example",quote:"Get a quote",before:"Before",after:"After",slide:"Slide to compare",
+      live:"Real example",example:"Illustrative example",quote:"Get a quote",before:"Before",after:"After",slide:"Slide to compare",
       linkedin:"LinkedIn",instagram:"Instagram",whatsapp:"WhatsApp",view:"View project",
       toDark:"🌙 Dark",toLight:"☀️ Light",otherLang:"Español"}
 };
@@ -309,7 +310,8 @@ var WA = "https://wa.me/529982212631?text=";
 //   {type:"video", src:"assets/recorrido.mp4", poster:"assets/casa.jpg"}
 //   {type:"youtube", id:"ID_DEL_VIDEO"}
 var SERVICES = [
-  { id:"web", art:"web", media:null,
+  { id:"web", art:"web", media:{type:"site", src:"https://asurpropuesta2026.lrgahus.workers.dev/"},
+    example:{url:"https://asurpropuesta2026.lrgahus.workers.dev/", label:{es:"Ver ejemplo en vivo: propuesta de rediseño ASUR", en:"See live example: ASUR redesign proposal"}},
     short:{es:"Páginas web", en:"Websites"},
     title:{es:"Páginas web a tu medida", en:"Custom websites"},
     desc:{es:"Diseño y desarrollo de tu página web. Sin suscripción: un solo pago que cubre un año, con SEO para que te encuentren en Google.",
@@ -430,6 +432,7 @@ var ART = {
 function mediaFor(s, t){
   var m = s.media;
   if (m) {
+    if (m.type === "site") return '<iframe class="site" src="' + m.src + '" title="' + s.title[lang] + '" loading="lazy" tabindex="-1" scrolling="no"></iframe><span class="ex">' + t.live + '</span>';
     if (m.type === "img") return '<img src="' + m.src + '" alt="' + s.title[lang] + '" loading="lazy">';
     if (m.type === "video") return '<video controls playsinline preload="metadata" src="' + m.src + '"' + (m.poster ? ' poster="' + m.poster + '"' : '') + '></video>';
     if (m.type === "youtube") return '<iframe src="https://www.youtube-nocookie.com/embed/' + m.id + '" title="' + s.title[lang] + '" loading="lazy" allowfullscreen></iframe>';
@@ -446,10 +449,20 @@ function renderServices(t){
     return '<article class="card reveal" style="--d:' + (i % 3) + '"><div class="media">' + mediaFor(s, t) + '</div><div class="body">' +
       '<h3>' + s.title[lang] + '</h3><p>' + s.desc[lang] + '</p>' +
       (s.tags ? '<div class="tags">' + s.tags[lang].map(function(x){ return '<span>' + x + '</span>'; }).join("") + '</div>' : "") +
+      (s.example ? '<p><a class="go" href="' + s.example.url + '" target="_blank" rel="noopener">' + s.example.label[lang] + ' <span>→</span></a></p>' : "") +
       '<button class="btn" type="button" data-svc="' + s.id + '">' + t.quote + ' <span>→</span></button></div></article>';
   }).join("");
   box.querySelectorAll(".reveal").forEach(watch);
+  fitSites();
 }
+// Miniatura en vivo: el sitio se renderiza a 1280px y se escala al ancho de la tarjeta
+function fitSites(){
+  document.querySelectorAll("iframe.site").forEach(function(f){
+    var w = f.parentNode.clientWidth;
+    if (w) f.style.transform = "scale(" + (w / 1280) + ")";
+  });
+}
+window.addEventListener("resize", fitSites);
 document.getElementById("services").addEventListener("click", function(e){
   var b = e.target.closest("[data-svc]");
   if (b) quoteFor(b.getAttribute("data-svc"));
@@ -576,6 +589,7 @@ function openPanel(id){
     b.setAttribute("aria-expanded", on ? "true" : "false");
     document.getElementById(b.getAttribute("aria-controls")).hidden = !on;
   });
+  fitSites();
   if (!document.getElementById(id).hidden) {
     setTimeout(function(){ document.getElementById("tabs").scrollIntoView({ behavior:"smooth", block:"start" }); }, 60);
   }
