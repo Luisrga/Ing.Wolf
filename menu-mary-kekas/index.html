@@ -247,10 +247,21 @@ function watch(){
   var links = document.querySelectorAll("nav a");
   var spy = new IntersectionObserver(function(es){
     es.forEach(function(e){
-      if (e.isIntersecting) links.forEach(function(a){ a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id); });
+      if (e.isIntersecting) setOn(e.target.id);
     });
   }, {rootMargin:"-35% 0px -60% 0px"});
   document.querySelectorAll("main section").forEach(function(s){ spy.observe(s); });
+  function setOn(id){
+    var wrap = el("nav");
+    links.forEach(function(a){
+      var on = a.getAttribute("href") === "#" + id;
+      a.classList.toggle("on", on);
+      if (on) wrap.scrollTo ? wrap.scrollTo({left: a.offsetLeft - (wrap.clientWidth - a.offsetWidth) / 2, behavior: "smooth"}) : (wrap.scrollLeft = a.offsetLeft - 16);
+    });
+  }
+  window.addEventListener("scroll", function(){
+    if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 4) setOn("visitanos");
+  }, {passive:true});
 }
 
 el("langBtn").addEventListener("click", function(){
