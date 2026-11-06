@@ -79,6 +79,8 @@ section{padding:34px 0 6px}
 .note{margin-top:10px;color:var(--muted);font-size:.85rem}
 
 .posters{display:grid;gap:16px;grid-template-columns:1fr 1fr;margin-top:18px}
+.posters a{display:block}
+.pills{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
 .posters img{width:100%;height:auto;display:block;border:3px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink)}
 @media(max-width:520px){.posters{grid-template-columns:1fr}}
 
@@ -121,7 +123,9 @@ footer a{color:var(--ink);font-weight:700}
 <script>
 // ===== Datos (edita aquí precios, horarios y contacto) =====
 var WA_NUM = "5219981591114";           // WhatsApp para pedidos
-var TEL = "9991591114";                 // teléfono del local
+var UBER = "https://www.ubereats.com/store-browse-uuid/fdc1ffb6-77ef-49ab-9598-8a33a01b4151?diningMode=DELIVERY";
+var RAPPI = "https://www.rappi.com.mx/restaurantes/delivery/409734-mary-kekas-cancun?utm_source=app&utm_medium=deeplink&utm_campaign=share";
+var TEL = "9981591114";                 // teléfono del local
 var MAPS = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("Av. Comalcalco entre Calle 22 y Calle 24, Supermanzana 95, Cancún, Q.R.");
 
 var I = {
@@ -221,11 +225,12 @@ function render(){
     '<div><div class="dl">' + DRINKS.map(function(d){ return '<div class="row"><span>' + d.n[lang] + '</span><b>$' + d.p + '</b></div>'; }).join("") + '</div><p class="note">' + u.vary + '</p></div></div></section>';
 
   h += '<section id="domicilio"><div class="head"><h2>' + u.deliv + '</h2></div><p class="desc"><b>' + u.dTitle + '</b> · ' + u.dDesc + '</p>' +
-    '<div class="posters"><img src="img/ubereats.jpg" alt="Uber Eats" loading="lazy"><img src="img/rappi.jpg" alt="Rappi" loading="lazy"></div></section>';
+    '<div class="posters"><a href="' + UBER + '" target="_blank" rel="noopener"><img src="img/ubereats.jpg" alt="Uber Eats" loading="lazy"></a><a href="' + RAPPI + '" target="_blank" rel="noopener"><img src="img/rappi.jpg" alt="Rappi" loading="lazy"></a></div>' +
+    '<div class="pills"><a class="pill" href="' + UBER + '" target="_blank" rel="noopener">Uber Eats →</a><a class="pill" href="' + RAPPI + '" target="_blank" rel="noopener">Rappi →</a></div></section>';
 
   h += '<section id="visitanos"><div class="head"><h2>' + u.visit + '</h2></div><div class="info">' +
     '<a href="' + MAPS + '" target="_blank" rel="noopener"><span class="ic">📍</span><span><b>' + u.addr + '</b><small>' + u.addrV + '</small><small>' + u.maps + ' →</small></span></a>' +
-    '<a href="tel:+52' + TEL + '"><span class="ic">📞</span><span><b>' + u.phone + '</b><small>999 159 1114</small></span></a>' +
+    '<a href="tel:+52' + TEL + '"><span class="ic">📞</span><span><b>' + u.phone + '</b><small>998 159 1114</small></span></a>' +
     '<div><span class="ic">🕘</span><span><b>' + u.hours + '</b><small>' + u.hoursV + '</small><small>' + u.hoursN + '</small></span></div></div></section>';
 
   el("menu").innerHTML = h;
