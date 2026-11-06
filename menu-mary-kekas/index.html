@@ -109,6 +109,7 @@ footer a{color:var(--ink);font-weight:700}
     <div class="bar">
       <button class="pill" id="langBtn" type="button" aria-label="Cambiar idioma / Change language">EN</button>
       <a class="pill" href="https://www.instagram.com/marykekascancun/" target="_blank" rel="noopener">Instagram</a>
+      <a class="pill" id="rateTop" href="#" target="_blank" rel="noopener">★ 5</a>
       <a class="pill wa" id="waTop" href="#" target="_blank" rel="noopener" data-i="order">Pedir por WhatsApp</a>
     </div>
   </div>
@@ -203,6 +204,7 @@ function render(){
   var u = UI[lang];
   document.documentElement.lang = lang;
   el("langBtn").textContent = lang === "es" ? "EN" : "ES";
+  el("rateTop").href = REVIEW; el("rateTop").textContent = lang === "es" ? "★ Calificar" : "★ Rate us";
   el("waTop").href = waLink(); el("waFab").href = waLink();
   document.querySelectorAll("[data-i]").forEach(function(n){ n.innerHTML = u[n.getAttribute("data-i")]; });
 
