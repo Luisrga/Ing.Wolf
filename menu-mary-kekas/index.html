@@ -234,8 +234,8 @@ function render(){
   GROUPS.forEach(function(g, gi){
     h += '<div class="page" id="pg' + gi + '" role="tabpanel"' + (cur === gi ? '' : ' hidden') + '><div>' +
       '<img class="pic" src="' + g.img + '" alt="' + g.name[lang] + '">' +
-      g.desc[lang].map(function(t){ return '<p class="desc">' + t + '</p>'; }).join("") +
-      '<div class="photos">' + g.photos.map(function(p){ return '<figure class="photo"><img src="' + p[0] + '" alt="' + p[1][lang] + '" loading="lazy"><figcaption>' + p[1][lang] + '</figcaption></figure>'; }).join("") + '</div>';
+      '<div class="photos">' + g.photos.map(function(p){ return '<figure class="photo"><img src="' + p[0] + '" alt="' + p[1][lang] + '" loading="lazy"><figcaption>' + p[1][lang] + '</figcaption></figure>'; }).join("") + '</div>' +
+      g.desc[lang].map(function(t){ return '<p class="desc">' + t + '</p>'; }).join("");
     h += '</div><div><div class="grid">';
     SECS.forEach(function(s, i){
       h += '<div class="tier k-' + s.k + '"><div class="items"><div class="sec">' + s.n[lang] + '</div>' +
@@ -291,12 +291,19 @@ function showPage(i){
   document.querySelectorAll(".page").forEach(function(p, k){ p.hidden = k !== i; });
   track();
 }
+var lastKey = null;
 function setOn(k){
+  if (k === lastKey && document.querySelector("nav a.on")) return;
+  lastKey = k;
   var wrap = el("nav");
   document.querySelectorAll("nav a").forEach(function(a){
     var on = a.getAttribute("data-k") === k;
     a.classList.toggle("on", on);
-    if (on) { var x = a.offsetLeft - (wrap.clientWidth - a.offsetWidth) / 2; if (wrap.scrollTo) wrap.scrollTo({left: x, behavior: "smooth"}); else wrap.scrollLeft = x; }
+    if (on) {
+      var x = a.getBoundingClientRect().left - wrap.getBoundingClientRect().left + wrap.scrollLeft - (wrap.clientWidth - a.offsetWidth) / 2;
+      x = Math.max(0, Math.min(x, wrap.scrollWidth - wrap.clientWidth));
+      if (wrap.scrollTo) wrap.scrollTo({left: x, behavior: "smooth"}); else wrap.scrollLeft = x;
+    }
   });
 }
 function track(){
