@@ -324,7 +324,8 @@ var SERVICES = [
     desc:{es:"Mejoramos la calidad de las fotos de tu propiedad y creamos el video de recorrido para que se venda o se rente más rápido.",
           en:"We enhance your property photos and produce a walkthrough video so it sells or rents faster."},
     kw:["inmueble","bienes","raiz","propiedad","casa","render","real estate","property","tour","recorrido"] },
-  { id:"menu", art:"menu", media:null,
+  { id:"menu", art:"menu", media:{type:"site", src:"menu-mary-kekas/index.html"},
+    example:{url:"menu-mary-kekas/index.html", same:true, label:{es:"Ver ejemplo en vivo: menú de Mary Kekas", en:"See live example: Mary Kekas menu"}},
     short:{es:"Menús", en:"Menus"},
     title:{es:"Menús para restaurantes", en:"Restaurant menus"},
     desc:{es:"Diseño de menús para tu restaurante, listos para imprimir o compartir en digital.",
@@ -449,7 +450,7 @@ function renderServices(t){
     return '<article class="card reveal" style="--d:' + (i % 3) + '"><div class="media">' + mediaFor(s, t) + '</div><div class="body">' +
       '<h3>' + s.title[lang] + '</h3><p>' + s.desc[lang] + '</p>' +
       (s.tags ? '<div class="tags">' + s.tags[lang].map(function(x){ return '<span>' + x + '</span>'; }).join("") + '</div>' : "") +
-      (s.example ? '<p><a class="go" href="' + s.example.url + '" target="_blank" rel="noopener">' + s.example.label[lang] + ' <span>→</span></a></p>' : "") +
+      (s.example ? '<p><a class="go" href="' + s.example.url + '"' + (s.example.same ? '' : ' target="_blank" rel="noopener"') + '>' + s.example.label[lang] + ' <span>→</span></a></p>' : "") +
       '<button class="btn" type="button" data-svc="' + s.id + '">' + t.quote + ' <span>→</span></button></div></article>';
   }).join("");
   box.querySelectorAll(".reveal").forEach(watch);
