@@ -80,6 +80,9 @@ section{padding:34px 0 6px}
 
 .posters{display:grid;gap:16px;grid-template-columns:1fr 1fr;margin-top:18px}
 .posters a{display:block}
+.review{margin-top:18px;padding:20px;text-align:center;background:var(--mustard);border:3px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink)}
+.review b{font-family:"Bowlby One";font-weight:400;font-size:1.25rem;display:block}
+.review p{font-weight:700;margin:8px 0 14px}
 .pills{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
 .posters img{width:100%;height:auto;display:block;border:3px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink)}
 @media(max-width:520px){.posters{grid-template-columns:1fr}}
@@ -126,7 +129,8 @@ var WA_NUM = "5219981591114";           // WhatsApp para pedidos
 var UBER = "https://www.ubereats.com/store-browse-uuid/fdc1ffb6-77ef-49ab-9598-8a33a01b4151?diningMode=DELIVERY";
 var RAPPI = "https://www.rappi.com.mx/restaurantes/delivery/409734-mary-kekas-cancun?utm_source=app&utm_medium=deeplink&utm_campaign=share";
 var TEL = "9981591114";                 // teléfono del local
-var MAPS = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("Av. Comalcalco entre Calle 22 y Calle 24, Supermanzana 95, Cancún, Q.R.");
+var MAPS = "https://www.google.com/maps/place/Mary+Kekas+Canc%C3%BAn/@21.1416683,-86.8575965,18z/data=!3m1!5s0x8f4c2b9ea5febd2f:0xb2cde1f7413dd99a!4m8!3m7!1s0x8f4c2b25e37d663f:0xe3b2c70308b9eed1!8m2!3d21.1418266!4d-86.8577567!9m1!1b1!16s%2Fg%2F11fj2qlv3j?entry=ttu";
+var REVIEW = MAPS;
 
 var I = {
   asada:{es:"Carne asada",en:"Grilled steak"}, champi:{es:"Champiñones",en:"Mushrooms"},
@@ -178,14 +182,16 @@ var UI = {
       vary:"Los sabores disponibles pueden variar.",
       dTitle:"Pídelas por Uber Eats o Rappi",dDesc:"¿Tu oficina queda lejos? ¡No pasa nada! Pide tus kekas a domicilio.",
       addr:"Dirección",addrV:"Av. Comalcalco, entre Calle 22 y Calle 24, Supermanzana 95, Cancún, Q.R.",maps:"Ver en Google Maps",
-      phone:"Teléfono",hours:"Horario",hoursV:"9:00 AM a 4:00 PM",hoursN:"Servicio en mesa hasta las 3:30 PM. Después, solo pedidos para llevar."},
+      phone:"Teléfono",hours:"Horario",hoursV:"9:00 AM a 4:00 PM",hoursN:"Servicio en mesa hasta las 3:30 PM. Después, solo pedidos para llevar.",
+      revT:"¿Te gustaron tus kekas?",revD:"Regálanos 5 estrellas en Google Maps. ¡Nos ayuda muchísimo!",revB:"Calificar ★★★★★"},
   en:{order:"Order on WhatsApp",tagline:"Handcrafted street food made with traditional recipes",
       guisado:"Extra filling",comp:"Extra toppings",promos:"Specials",drinks:"Drinks",deliv:"Delivery",visit:"Visit us",
       iva:"All our prices include VAT.",demo:'Demo digital menu created by <a href="../">Ing. Wolf</a>.',
       vary:"Available flavors may vary.",
       dTitle:"Order on Uber Eats or Rappi",dDesc:"Office too far? No problem! Get your kekas delivered.",
       addr:"Address",addrV:"Av. Comalcalco, between Calle 22 and Calle 24, Supermanzana 95, Cancún, Q.R.",maps:"Open in Google Maps",
-      phone:"Phone",hours:"Hours",hoursV:"9:00 AM to 4:00 PM",hoursN:"Table service until 3:30 PM. After that, takeout orders only."}
+      phone:"Phone",hours:"Hours",hoursV:"9:00 AM to 4:00 PM",hoursN:"Table service until 3:30 PM. After that, takeout orders only.",
+      revT:"Did you enjoy your kekas?",revD:"Give us 5 stars on Google Maps. It helps us a lot!",revB:"Rate us ★★★★★"}
 };
 
 var lang = "es";
@@ -231,7 +237,8 @@ function render(){
   h += '<section id="visitanos"><div class="head"><h2>' + u.visit + '</h2></div><div class="info">' +
     '<a href="' + MAPS + '" target="_blank" rel="noopener"><span class="ic">📍</span><span><b>' + u.addr + '</b><small>' + u.addrV + '</small><small>' + u.maps + ' →</small></span></a>' +
     '<a href="tel:+52' + TEL + '"><span class="ic">📞</span><span><b>' + u.phone + '</b><small>998 159 1114</small></span></a>' +
-    '<div><span class="ic">🕘</span><span><b>' + u.hours + '</b><small>' + u.hoursV + '</small><small>' + u.hoursN + '</small></span></div></div></section>';
+    '<div><span class="ic">🕘</span><span><b>' + u.hours + '</b><small>' + u.hoursV + '</small><small>' + u.hoursN + '</small></span></div></div>' +
+    '<div class="review"><b>' + u.revT + '</b><p>' + u.revD + '</p><a class="pill" href="' + REVIEW + '" target="_blank" rel="noopener">' + u.revB + '</a></div></section>';
 
   el("menu").innerHTML = h;
   watch();
